@@ -14,8 +14,14 @@ export const Home = () => {
           href="#"
           onClick={() => setFeed('for you')}
         >
-          <span className={[styles.navText, feed === 'for you' && styles.navTextActive].join(" ")}>
-            For you<div className={feed === 'for you' && styles.active}></div>
+          <span
+            className={[
+              styles.navText,
+              feed === 'for you' ? styles.navTextActive : '',
+            ].join(' ')}
+          >
+            For you
+            <div className={feed === 'for you' ? styles.active : ''}></div>
           </span>
         </a>
         <a
@@ -23,9 +29,14 @@ export const Home = () => {
           href="#"
           onClick={() => setFeed('following')}
         >
-          <span className={[styles.navText, feed === 'following' && styles.navTextActive].join(" ")}>
+          <span
+            className={[
+              styles.navText,
+              feed === 'following' && styles.navTextActive,
+            ].join(' ')}
+          >
             Following
-            <div className={feed === 'following' && styles.active}></div>
+            <div className={feed === 'following' ? styles.active : ''}></div>
           </span>
         </a>
       </nav>
