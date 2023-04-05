@@ -2,22 +2,18 @@ import styles from './Tweet.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
 
-export const Tweet = () => {
-  const [liked, setLiked] = React.useState(false);
+export const Tweet = (props) => {
+  const [liked, setLiked] = React.useState(props.liked);
 
   return (
     <article className={styles.tweet}>
       <div>
-        <a className={styles.displayName}>Name</a>
-        <a className={styles.username}>@username</a>
+        <a className={styles.displayName}>{props.displayName}</a>
+        <a className={styles.username}>@{props.username}</a>
         <span className={styles.dot}>·</span>
-        <a className={styles.date}>Mar 26</a>
+        <a className={styles.date}>{props.date}</a>
       </div>
-      <p className={styles.text}>
-        The content of the tweet here. Random words blah blah. Long tweet with a
-        lot characters. Even some more words to check for the word-breaking.
-        Lorem impsum blah blah.
-      </p>
+      <p className={styles.text}>{props.text}</p>
       <div className={styles.icons}>
         <div className={[styles.chat, styles.icon].join(' ')}>
           <svg>
@@ -31,7 +27,12 @@ export const Tweet = () => {
           </svg>
         </div>
 
-        <div className={[styles.like, styles.icon, liked ? styles.liked : ''].join(' ')} onClick={() => setLiked(!liked)}>
+        <div
+          className={[styles.like, styles.icon, liked ? styles.liked : ''].join(
+            ' '
+          )}
+          onClick={() => setLiked(!liked)}
+        >
           <svg>
             <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
           </svg>

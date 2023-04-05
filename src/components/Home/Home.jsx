@@ -1,9 +1,20 @@
 import { Tweet } from '../Tweet/Tweet';
 import styles from './Home.module.scss';
 import React from 'react';
+import { placeholderData } from '../../placeholderData';
 
 export const Home = () => {
   const [feed, setFeed] = React.useState('for you');
+  const displayTweets = placeholderData.map((data, i) => (
+    <Tweet
+      displayName={data.displayName}
+      username={data.username}
+      date={data.date}
+      text={data.text}
+      liked={data.liked}
+      key={i}
+    />
+  ));
 
   return (
     <main className={styles.home}>
@@ -40,9 +51,7 @@ export const Home = () => {
           </span>
         </a>
       </nav>
-      <section>
-        <Tweet />
-      </section>
+      <section>{displayTweets}</section>
     </main>
   );
 };
