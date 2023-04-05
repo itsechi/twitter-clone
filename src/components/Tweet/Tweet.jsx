@@ -1,7 +1,10 @@
 import styles from './Tweet.module.scss';
 import icons from '../../assets/icons.svg';
+import React from 'react';
 
 export const Tweet = () => {
+  const [liked, setLiked] = React.useState(false);
+
   return (
     <article className={styles.tweet}>
       <div>
@@ -28,9 +31,9 @@ export const Tweet = () => {
           </svg>
         </div>
 
-        <div className={[styles.like, styles.icon].join(' ')}>
+        <div className={[styles.like, styles.icon, liked ? styles.liked : ''].join(' ')} onClick={() => setLiked(!liked)}>
           <svg>
-            <use href={`${icons}#like`}></use>
+            <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
           </svg>
         </div>
       </div>
