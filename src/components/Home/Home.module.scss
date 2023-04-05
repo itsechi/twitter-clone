@@ -2,6 +2,8 @@
   max-width: 600px;
   width: 600px;
   /* for testing only */
+  border-left: 1px solid rgb(239, 243, 244);
+  border-right: 1px solid rgb(239, 243, 244);
 }
 
 .title {
@@ -19,7 +21,7 @@
 
 .navLink {
   text-decoration: none;
-  color: rgba(0, 0, 0, 1.00);
+  color: rgb(83, 100, 113);
   font-weight: 700;
   font-size: 15px;
   width: 100%;
@@ -45,4 +47,8 @@
   position: absolute;
   bottom: 0;
   border-radius: 10px;
+}
+
+.navTextActive {
+  color: rgba(0, 0, 0, 1.00);
 }

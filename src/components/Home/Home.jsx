@@ -1,3 +1,4 @@
+import { Tweet } from '../Tweet/Tweet';
 import styles from './Home.module.scss';
 import React from 'react';
 
@@ -13,7 +14,7 @@ export const Home = () => {
           href="#"
           onClick={() => setFeed('for you')}
         >
-          <span className={styles.navText}>
+          <span className={[styles.navText, feed === 'for you' && styles.navTextActive].join(" ")}>
             For you<div className={feed === 'for you' && styles.active}></div>
           </span>
         </a>
@@ -22,12 +23,15 @@ export const Home = () => {
           href="#"
           onClick={() => setFeed('following')}
         >
-          <span className={styles.navText}>
+          <span className={[styles.navText, feed === 'following' && styles.navTextActive].join(" ")}>
             Following
             <div className={feed === 'following' && styles.active}></div>
           </span>
         </a>
       </nav>
+      <section>
+        <Tweet />
+      </section>
     </main>
   );
 };
