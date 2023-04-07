@@ -25,12 +25,12 @@ export const Home = () => {
   const displayTweets =
     tweets &&
     tweets.map((data, i) => {
-      console.log(data);
       const date = new Date(data.date.seconds * 1000);
       const formattedDate = format(date, 'MMM q');
 
       return (
         <Tweet
+          profilePicture={data.profilePicture}
           displayName={data.displayName}
           username={data.username}
           date={formattedDate}
@@ -76,7 +76,7 @@ export const Home = () => {
           </span>
         </a>
       </nav>
-      <section>{tweets && displayTweets}</section>
+      <section>{displayTweets}</section>
     </main>
   );
 };
