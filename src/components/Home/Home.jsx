@@ -1,20 +1,43 @@
 import { Tweet } from '../Tweet/Tweet';
 import styles from './Home.module.scss';
 import React from 'react';
-import { placeholderData } from '../../placeholderData';
+import { db } from '../../helpers/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export const Home = () => {
   const [feed, setFeed] = React.useState('for you');
-  const displayTweets = placeholderData.map((data, i) => (
-    <Tweet
-      displayName={data.displayName}
-      username={data.username}
-      date={data.date}
-      text={data.text}
-      liked={data.liked}
-      key={i}
-    />
-  ));
+  const [tweets, setTweets] = React.useState();
+
+  const getTweets = async () => {
+    let arr = [];
+    const querySnapshot = await getDocs(collection(db, 'tweets'));
+    querySnapshot.forEach((doc) => {
+      arr.push(doc.data());
+    });
+    setTweets(arr);
+  };
+
+  React.useEffect(() => {
+    getTweets();
+  }, []);
+
+  const displayTweets =
+    tweets &&
+    tweets.map((data, i) => {
+      console.log(data);
+      const formattedDate = new Date(data.date.seconds * 1000);
+
+      return (
+        <Tweet
+          displayName={data.displayName}
+          username={data.username}
+          // date={data.date}
+          text={data.text}
+          liked={data.liked}
+          key={i}
+        />
+      );
+    });
 
   return (
     <main className={styles.home}>
@@ -51,7 +74,7 @@ export const Home = () => {
           </span>
         </a>
       </nav>
-      <section>{displayTweets}</section>
+      <section>{tweets && displayTweets}</section>
     </main>
   );
 };
