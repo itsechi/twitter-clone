@@ -34,7 +34,7 @@ function App() {
     <div className="app">
       {modal && <LoginModal signInWithGoogle={signInWithGoogle} />}
       <Header signOut={signOutUser} />
-      <Home openModal={openModal} />
+      <Home openModal={openModal} user={user} />
       {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
     </div>
   );

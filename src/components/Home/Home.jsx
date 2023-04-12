@@ -38,6 +38,7 @@ export const Home = (props) => {
           liked={data.liked}
           key={i}
           openModal={props.openModal}
+          user={props.user}
         />
       );
     });

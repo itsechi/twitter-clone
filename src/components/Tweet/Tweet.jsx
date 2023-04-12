@@ -35,7 +35,7 @@ export const Tweet = (props) => {
               styles.icon,
               liked ? styles.liked : '',
             ].join(' ')}
-            onClick={() => setLiked(!liked)}
+            onClick={() => props.user && setLiked(!liked)}
           >
             <svg>
               <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
