@@ -26,7 +26,7 @@ export const Home = () => {
     tweets &&
     tweets.map((data, i) => {
       const date = new Date(data.date.seconds * 1000);
-      const formattedDate = format(date, 'MMM q');
+      const formattedDate = format(date, 'MMM d');
 
       return (
         <Tweet
