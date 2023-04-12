@@ -30,6 +30,32 @@
   padding-bottom: 48px;
 }
 
+.closeBtn {
+  align-self: flex-start;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: rgb(15, 20, 25);
+  fill: currentcolor;
+  min-height: 36px;
+  min-width: 36px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+}
+
+.twitterIcon {
+  color: rgb(29, 155, 240);
+  fill: currentcolor;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+}
+
 .text {
   margin-bottom: 32px;
   color: rgb(83, 100, 113);
@@ -53,22 +79,4 @@
   border-radius: 9999px;
   padding: 8px 16px;
   transition: background-color 0.2s;
-}
-
-.closeBtn {
-  align-self: flex-start;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: rgb(15, 20, 25);
-  fill: currentcolor;
-  min-height: 36px;
-  min-width: 36px;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba(15, 20, 25, 0.1);
-  }
 }
