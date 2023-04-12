@@ -8,7 +8,7 @@ export const Tweet = (props) => {
   return (
     <article className={styles.tweet}>
       <img className={styles.profilePic} src={props.profilePicture}></img>
-      <div>
+      <div className={styles.tweetContent}>
         <div>
           <a className={styles.displayName}>{props.displayName}</a>
           <a className={styles.username}>@{props.username}</a>
