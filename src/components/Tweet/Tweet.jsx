@@ -16,7 +16,7 @@ export const Tweet = (props) => {
           <a className={styles.date}>{props.date}</a>
         </div>
         <p className={styles.text}>{props.text}</p>
-        <div className={styles.icons}>
+        <div className={styles.icons} onClick={props.openModal} data-id="icons">
           <div className={[styles.chat, styles.icon].join(' ')}>
             <svg>
               <use href={`${icons}#chat`}></use>

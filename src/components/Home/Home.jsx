@@ -5,7 +5,7 @@ import { db } from '../../helpers/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import format from 'date-fns/format';
 
-export const Home = () => {
+export const Home = (props) => {
   const [feed, setFeed] = React.useState('for you');
   const [tweets, setTweets] = React.useState();
 
@@ -37,6 +37,7 @@ export const Home = () => {
           text={data.text}
           liked={data.liked}
           key={i}
+          openModal={props.openModal}
         />
       );
     });

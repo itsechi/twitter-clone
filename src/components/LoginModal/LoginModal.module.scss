@@ -1,0 +1,56 @@
+.container {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: -1;
+}
+
+.loginModal {
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+  padding: 16px;
+  padding-bottom: 48px;
+}
+
+.text {
+  margin-bottom: 32px;
+  color: rgb(83, 100, 113);
+  font-size: 15px;
+}
+
+.textLarge {
+  font-size: 26px;
+  color: rgb(15, 20, 25);
+}
+
+.btn {
+  background-color: rgb(29, 155, 240);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 17px;
+  color: white;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  transition: background-color 0.2s;
+}
