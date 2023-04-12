@@ -32,7 +32,9 @@ function App() {
 
   return (
     <div className="app">
-      {modal && <LoginModal signInWithGoogle={signInWithGoogle} />}
+      {modal && (
+        <LoginModal signInWithGoogle={signInWithGoogle} setModal={setModal} />
+      )}
       <Header signOut={signOutUser} />
       <Home openModal={openModal} user={user} />
       {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
