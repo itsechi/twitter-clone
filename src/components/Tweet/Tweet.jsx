@@ -1,21 +1,25 @@
 import styles from './Tweet.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
+import format from 'date-fns/format';
 
 export const Tweet = (props) => {
-  const [liked, setLiked] = React.useState(props.liked);
+  const { data } = props;
+  const [liked, setLiked] = React.useState(data.liked);
+  const date = new Date(data.date.seconds * 1000);
+  const formattedDate = format(date, 'MMM d');
 
   return (
     <article className={styles.tweet}>
-      <img className={styles.profilePic} src={props.profilePicture}></img>
+      <img className={styles.profilePic} src={data.profilePicture}></img>
       <div className={styles.tweetContent}>
         <div>
-          <a className={styles.displayName}>{props.displayName}</a>
-          <a className={styles.username}>@{props.username}</a>
+          <a className={styles.displayName}>{data.displayName}</a>
+          <a className={styles.username}>@{data.username}</a>
           <span className={styles.dot}>·</span>
-          <a className={styles.date}>{props.date}</a>
+          <a className={styles.date}>{formattedDate}</a>
         </div>
-        <p className={styles.text}>{props.text}</p>
+        <p className={styles.text}>{data.text}</p>
         <div className={styles.icons} onClick={props.openModal} data-id="icons">
           <div className={[styles.chat, styles.icon].join(' ')}>
             <svg>
