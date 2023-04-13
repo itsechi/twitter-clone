@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 export const Header = (props) => {
   const [active, setActive] = React.useState('home');
+  const user = props.user;
+  const username = user && props.user.email.split('@')[0];
 
   return (
     <header className={styles.header}>
@@ -23,14 +25,14 @@ export const Header = (props) => {
           </span>
         </Link>
 
-        {props.user && (
+        {user && (
           <>
-            <div className={styles.headerLink}>
+            <Link to={`/${username}`} className={styles.headerLink}>
               <svg>
                 <use href={`${icons}#profile`}></use>
               </svg>
               <span className={styles.headerText}>Profile</span>
-            </div>
+            </Link>
 
             <div className={styles.headerLink} onClick={props.signOut}>
               <svg>

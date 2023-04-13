@@ -2,6 +2,7 @@ import { Home } from './components/Home/Home';
 import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
+import { Profile } from './components/Profile/Profile';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './helpers/firebase';
@@ -19,6 +20,7 @@ function App() {
 
   React.useEffect(() => {
     setModal(false);
+    // console.log(user.email.split('@')[0]);
   }, [user]);
 
   const openModal = (e) => {
@@ -49,6 +51,7 @@ function App() {
             path="/home"
             element={<Home openModal={openModal} user={user} />}
           />
+          <Route path="/:id" element={<Profile />} />
         </Routes>
 
         {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
