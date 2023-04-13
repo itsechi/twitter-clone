@@ -1,6 +1,7 @@
 import styles from './Header.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Header = (props) => {
   const [active, setActive] = React.useState('home');
@@ -8,7 +9,7 @@ export const Header = (props) => {
   return (
     <header className={styles.header}>
       <div>
-        <div className={styles.headerLink}>
+        <Link to="/home" className={styles.headerLink}>
           <svg>
             <use href={`${icons}#home`}></use>
           </svg>
@@ -20,7 +21,7 @@ export const Header = (props) => {
           >
             Home
           </span>
-        </div>
+        </Link>
 
         {props.user && (
           <>
