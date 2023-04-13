@@ -1,11 +1,17 @@
 import { Home } from './components/Home/Home';
 import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
+import { LoginModal } from './components/LoginModal/LoginModal';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './helpers/firebase';
 import React from 'react';
-import { LoginModal } from './components/LoginModal/LoginModal';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 
 function App() {
   const [user] = useAuthState(auth);
@@ -32,12 +38,21 @@ function App() {
 
   return (
     <div className="app">
-      {modal && (
-        <LoginModal signInWithGoogle={signInWithGoogle} setModal={setModal} />
-      )}
-      <Header signOut={signOutUser} user={user} />
-      <Home openModal={openModal} user={user} />
-      {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
+      <Router>
+        {modal && (
+          <LoginModal signInWithGoogle={signInWithGoogle} setModal={setModal} />
+        )}
+        <Header signOut={signOutUser} user={user} />
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route
+            path="/home"
+            element={<Home openModal={openModal} user={user} />}
+          />
+        </Routes>
+
+        {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
+      </Router>
     </div>
   );
 }
