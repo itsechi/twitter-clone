@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const Header = (props) => {
   const [active, setActive] = React.useState('home');
-  const user = props.user;
+  const {user} = props;
   const username = user && props.user.email.split('@')[0];
 
   return (

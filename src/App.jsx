@@ -51,7 +51,7 @@ function App() {
             path="/home"
             element={<Home openModal={openModal} user={user} />}
           />
-          <Route path="/:id" element={<Profile />} />
+          <Route path="/:id" element={<Profile user={user} />} />
         </Routes>
 
         {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}

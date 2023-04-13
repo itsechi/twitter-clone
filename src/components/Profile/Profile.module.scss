@@ -1,0 +1,44 @@
+.profile {
+  width: 100%;
+  max-width: 600px;
+  border-left: 1px solid rgb(239, 243, 244);
+  border-right: 1px solid rgb(239, 243, 244);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.headerIcon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: rgb(15, 20, 25);
+  fill: currentcolor;
+  min-height: 36px;
+  min-width: 36px;
+  transition: background-color 0.2s;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+}
+
+.headerText {
+  margin-left: 24px;
+  line-height: 16px;
+  color: rgb(83, 100, 113);
+  font-size: 13px;
+}
+
+.headerTextLarge {
+  color: rgb(15, 20, 25);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
