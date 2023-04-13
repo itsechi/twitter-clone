@@ -62,3 +62,30 @@
   background-color: #fff;
   min-width: 48px;
 }
+
+.info {
+  margin-top: 11%;
+  /* testing only */
+  padding: 8px;
+}
+
+.displayName {
+  margin-top: 4px;
+  color: rgb(15, 20, 25);
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.username {
+  color: rgb(83, 100, 113);
+  font-size: 15px;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+
+.description {
+  color: rgb(15, 20, 25);
+  font-size: 15px;
+  word-wrap: break-word;
+  line-height: 20px;
+}

@@ -20,7 +20,6 @@ function App() {
 
   React.useEffect(() => {
     setModal(false);
-    // console.log(user.email.split('@')[0]);
   }, [user]);
 
   const openModal = (e) => {

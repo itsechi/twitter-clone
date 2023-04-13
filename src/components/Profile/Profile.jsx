@@ -5,6 +5,7 @@ import icons from '../../assets/icons.svg';
 export const Profile = (props) => {
   const routeParams = useParams();
   const { user } = props;
+  const username = user.email.split('@')[0];
 
   return (
     <main className={styles.profile}>
@@ -24,7 +25,11 @@ export const Profile = (props) => {
         <img className={styles.banner} src="https://pbs.twimg.com/profile_banners/1557764542821765121/1680197453/600x200"></img>
         <img className={styles.profilePic} src="https://pbs.twimg.com/profile_images/1368996766364831749/yJLY51UF_400x400.jpg"></img>
       </div>
-      <div className={styles.info}></div>
+      <div className={styles.info}>
+        <h2 className={styles.displayName}>{user.displayName}</h2>
+        <p className={styles.username}>@{username}</p>
+        <p className={styles.description}>User description here. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, adipisci.</p>
+      </div>
     </main>
   );
 };
