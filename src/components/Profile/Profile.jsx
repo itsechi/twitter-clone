@@ -3,12 +3,42 @@ import styles from './Profile.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
 import { Nav } from '../Nav/Nav';
+import { db } from '../../helpers/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { Tweet } from '../Tweet/Tweet';
 
 export const Profile = (props) => {
   const routeParams = useParams();
   const { user } = props;
   const username = user.email.split('@')[0];
   const [feed, setFeed] = React.useState('Tweets');
+  const [tweets, setTweets] = React.useState();
+
+  const getTweets = async () => {
+    let arr = [];
+    const querySnapshot = await getDocs(collection(db, 'tweets'));
+    querySnapshot.forEach((doc) => {
+      arr.push(doc.data());
+    });
+    setTweets(arr);
+  };
+
+  React.useEffect(() => {
+    getTweets();
+  }, []);
+
+  const displayTweets =
+    tweets &&
+    tweets.map((data, i) => {
+      return (
+        <Tweet
+          key={i}
+          openModal={props.openModal}
+          user={props.user}
+          data={data}
+        />
+      );
+    });
 
   return (
     <main className={styles.profile}>
@@ -53,6 +83,8 @@ export const Profile = (props) => {
         setFeed={setFeed}
         ids={['Tweets', 'Replies', 'Media', 'Likes']}
       />
+
+      <section>{displayTweets}</section>
     </main>
   );
 };
