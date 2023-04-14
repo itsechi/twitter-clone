@@ -38,7 +38,7 @@ export const Home = (props) => {
   return (
     <main className={styles.home}>
       <h2 className={styles.title}>Home</h2>
-      <Nav feed={feed} setFeed={setFeed} />
+      <Nav feed={feed} setFeed={setFeed} ids={['For you', 'Following']} />
       <section>{displayTweets}</section>
     </main>
   );

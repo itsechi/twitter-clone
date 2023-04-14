@@ -2,12 +2,13 @@ import { useParams } from 'react-router-dom';
 import styles from './Profile.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
+import { Nav } from '../Nav/Nav';
 
 export const Profile = (props) => {
   const routeParams = useParams();
   const { user } = props;
   const username = user.email.split('@')[0];
-  const [feed, setFeed] = React.useState('tweets');
+  const [feed, setFeed] = React.useState('Tweets');
 
   return (
     <main className={styles.profile}>
@@ -47,62 +48,11 @@ export const Profile = (props) => {
         </p>
       </div>
 
-      <nav className={styles.nav}>
-        <a
-          className={styles.navLink}
-          href="#"
-          onClick={() => setFeed('tweets')}
-        >
-          <span
-            className={[
-              styles.navText,
-              feed === 'tweets' ? styles.navTextActive : '',
-            ].join(' ')}
-          >
-            Tweets
-            <div className={feed === 'tweets' ? styles.active : ''}></div>
-          </span>
-        </a>
-        <a
-          className={styles.navLink}
-          href="#"
-          onClick={() => setFeed('replies')}
-        >
-          <span
-            className={[
-              styles.navText,
-              feed === 'replies' && styles.navTextActive,
-            ].join(' ')}
-          >
-            Replies
-            <div className={feed === 'replies' ? styles.active : ''}></div>
-          </span>
-        </a>
-
-        <a className={styles.navLink} href="#" onClick={() => setFeed('media')}>
-          <span
-            className={[
-              styles.navText,
-              feed === 'media' && styles.navTextActive,
-            ].join(' ')}
-          >
-            Media
-            <div className={feed === 'media' ? styles.active : ''}></div>
-          </span>
-        </a>
-
-        <a className={styles.navLink} href="#" onClick={() => setFeed('likes')}>
-          <span
-            className={[
-              styles.navText,
-              feed === 'likes' && styles.navTextActive,
-            ].join(' ')}
-          >
-            Likes
-            <div className={feed === 'likes' ? styles.active : ''}></div>
-          </span>
-        </a>
-      </nav>
+      <Nav
+        feed={feed}
+        setFeed={setFeed}
+        ids={['Tweets', 'Replies', 'Media', 'Likes']}
+      />
     </main>
   );
 };
