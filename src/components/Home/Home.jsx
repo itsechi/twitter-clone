@@ -3,9 +3,10 @@ import styles from './Home.module.scss';
 import React from 'react';
 import { db } from '../../helpers/firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { Nav } from '../Nav/Nav';
 
 export const Home = (props) => {
-  const [feed, setFeed] = React.useState('for you');
+  const [feed, setFeed] = React.useState('For you');
   const [tweets, setTweets] = React.useState();
 
   const getTweets = async () => {
@@ -37,38 +38,7 @@ export const Home = (props) => {
   return (
     <main className={styles.home}>
       <h2 className={styles.title}>Home</h2>
-      <nav className={styles.nav}>
-        <a
-          className={styles.navLink}
-          href="#"
-          onClick={() => setFeed('for you')}
-        >
-          <span
-            className={[
-              styles.navText,
-              feed === 'for you' ? styles.navTextActive : '',
-            ].join(' ')}
-          >
-            For you
-            <div className={feed === 'for you' ? styles.active : ''}></div>
-          </span>
-        </a>
-        <a
-          className={styles.navLink}
-          href="#"
-          onClick={() => setFeed('following')}
-        >
-          <span
-            className={[
-              styles.navText,
-              feed === 'following' && styles.navTextActive,
-            ].join(' ')}
-          >
-            Following
-            <div className={feed === 'following' ? styles.active : ''}></div>
-          </span>
-        </a>
-      </nav>
+      <Nav feed={feed} setFeed={setFeed} />
       <section>{displayTweets}</section>
     </main>
   );
