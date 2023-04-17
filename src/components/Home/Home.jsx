@@ -2,7 +2,7 @@ import { Tweet } from '../Tweet/Tweet';
 import styles from './Home.module.scss';
 import React from 'react';
 import { db } from '../../helpers/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, getDoc } from 'firebase/firestore';
 import { Nav } from '../Nav/Nav';
 
 export const Home = (props) => {
@@ -10,12 +10,27 @@ export const Home = (props) => {
   const [tweets, setTweets] = React.useState();
 
   const getTweets = async () => {
-    let arr = [];
+    let data = [];
     const querySnapshot = await getDocs(collection(db, 'tweets'));
     querySnapshot.forEach((doc) => {
-      arr.push(doc.data());
+      data.push(doc.data());
     });
-    setTweets(arr);
+    await Promise.all(
+      data.map(async (tweet) => {
+        let user = await getUser(tweet.user);
+        tweet.user = user;
+      })
+    );
+    setTweets(data);
+  };
+
+  const getUser = async (ref) => {
+    const docRef = ref;
+    const docSnap = await getDoc(docRef);
+    let user;
+
+    if (docSnap.exists()) user = docSnap.data();
+    return user;
   };
 
   React.useEffect(() => {
@@ -25,6 +40,7 @@ export const Home = (props) => {
   const displayTweets =
     tweets &&
     tweets.map((data, i) => {
+      console.log(data);
       return (
         <Tweet
           key={i}
