@@ -3,10 +3,10 @@ import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
 import { Profile } from './components/Profile/Profile';
+import React from 'react';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './helpers/firebase';
-import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
