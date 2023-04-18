@@ -3,10 +3,12 @@ import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
 import { Profile } from './components/Profile/Profile';
-import React from 'react';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './helpers/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from './helpers/firebase';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,12 +22,29 @@ function App() {
 
   React.useEffect(() => {
     setModal(false);
+    checkUser(user);
   }, [user]);
 
   const openModal = (e) => {
     if (e.target.dataset.id === 'icons') return;
     if (user) return;
     setModal(true);
+  };
+
+  const checkUser = async (user) => {
+    if (!user) return;
+    const userData = {
+      username: user.email.split('@')[0],
+      displayName: user.displayName,
+      profilePicture: user.photoURL,
+    };
+    try {
+      await setDoc(doc(db, 'profiles', userData.username), {
+        ...userData,
+      });
+    } catch (error) {
+      console.error('Error saving user data fo Firebase Database', error);
+    }
   };
 
   const signInWithGoogle = () => {
