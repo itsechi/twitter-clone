@@ -1,15 +1,31 @@
 import styles from './Profile.module.scss';
 import icons from '../../assets/icons.svg';
-import React from 'react';
-import { useParams } from 'react-router-dom';
 import { Nav } from '../Nav/Nav';
 import { Tweets } from '../Tweets/Tweets';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../helpers/firebase';
 
 export const Profile = (props) => {
   const routeParams = useParams();
-  const { user } = props;
-  const username = user && user.email.split('@')[0];
   const [feed, setFeed] = React.useState('Tweets');
+  const [user, setUser] = React.useState();
+
+  const getUser = async (username) => {
+    const userQuery = query(
+      collection(db, 'profiles'),
+      where('username', '==', username)
+    );
+    const querySnapshot = await getDocs(userQuery);
+    const user = querySnapshot.docs[0];
+    if (!user) return;
+    setUser(user.data());
+  };
+
+  React.useEffect(() => {
+    getUser(routeParams.id);
+  }, []);
 
   return (
     <>
@@ -28,11 +44,8 @@ export const Profile = (props) => {
           </div>
 
           <div className={styles.images}>
-            <img
-              className={styles.banner}
-              src="https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200"
-            ></img>
-            <img className={styles.profilePic} src={user.photoURL}></img>
+            <img className={styles.banner} src={user.bannerPicture}></img>
+            <img className={styles.profilePic} src={user.profilePicture}></img>
           </div>
 
           <div className={styles.info}>
@@ -41,11 +54,8 @@ export const Profile = (props) => {
             </div>
 
             <h2 className={styles.displayName}>{user.displayName}</h2>
-            <p className={styles.username}>@{username}</p>
-            <p className={styles.description}>
-              User description here. Lorem ipsum dolor sit amet, consectetur
-              adipisicing elit. Voluptatibus, adipisci.
-            </p>
+            <p className={styles.username}>@{user.username}</p>
+            <p className={styles.description}>{user.description}</p>
           </div>
 
           <Nav
@@ -54,7 +64,7 @@ export const Profile = (props) => {
             ids={['Tweets', 'Replies', 'Media', 'Likes']}
           />
 
-          <Tweets openModal={props.openModal} user={routeParams.id} />
+          <Tweets openModal={props.openModal} user={user.username} />
         </main>
       )}
     </>

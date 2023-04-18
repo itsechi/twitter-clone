@@ -2,6 +2,7 @@ import styles from './Tweet.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
 import format from 'date-fns/format';
+import { Link } from 'react-router-dom';
 
 export const Tweet = (props) => {
   const { data } = props;
@@ -14,7 +15,7 @@ export const Tweet = (props) => {
       <img className={styles.profilePic} src={data.user.profilePicture}></img>
       <div className={styles.tweetContent}>
         <div>
-          <a className={styles.displayName}>{data.user.displayName}</a>
+        <Link to={`/${data.user.username}`} className={styles.displayName}>{data.user.displayName}</Link>
           <a className={styles.username}>@{data.user.username}</a>
           <span className={styles.dot}>·</span>
           <a className={styles.date}>{formattedDate}</a>

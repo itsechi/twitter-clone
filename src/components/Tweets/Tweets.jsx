@@ -1,8 +1,7 @@
 import { Tweet } from '../Tweet/Tweet';
 import React from 'react';
 import { db } from '../../helpers/firebase';
-import { collection, getDocs, getDoc } from 'firebase/firestore';
-import { query, where } from 'firebase/firestore';
+import { collection, getDocs, getDoc, query, where } from 'firebase/firestore';
 
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
