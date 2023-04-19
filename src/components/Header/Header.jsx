@@ -13,6 +13,15 @@ export const Header = (props) => {
       <div className={styles.headerFixed}>
         <Link
           to="/home"
+          className={styles.logoLink}
+          onClick={() => setActive('home')}
+        >
+          <svg>
+            <use href={`${icons}#twitter`}></use>
+          </svg>
+        </Link>
+        <Link
+          to="/home"
           className={styles.headerLink}
           onClick={() => setActive('home')}
         >
