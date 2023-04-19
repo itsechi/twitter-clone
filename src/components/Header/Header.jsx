@@ -10,7 +10,7 @@ export const Header = (props) => {
 
   return (
     <header className={styles.header}>
-      <div>
+      <div className={styles.headerFixed}>
         <Link
           to="/home"
           className={styles.headerLink}
