@@ -11,6 +11,7 @@ export const Profile = (props) => {
   const routeParams = useParams();
   const [feed, setFeed] = React.useState('Tweets');
   const [user, setUser] = React.useState();
+  const [tweets, setTweets] = React.useState();
 
   const getUser = async (username) => {
     const userQuery = query(
@@ -39,7 +40,7 @@ export const Profile = (props) => {
             </div>
             <div className={styles.headerText}>
               <h2 className={styles.headerTextLarge}>{user.displayName}</h2>
-              <p>0 Tweets</p>
+              <p>{tweets && `${tweets} Tweets`}</p>
             </div>
           </div>
 
@@ -71,7 +72,11 @@ export const Profile = (props) => {
             ids={['Tweets', 'Replies', 'Media', 'Likes']}
           />
 
-          <Tweets openModal={props.openModal} user={user.username} />
+          <Tweets
+            openModal={props.openModal}
+            user={user.username}
+            setTweets={setTweets}
+          />
         </>
       )}
     </main>

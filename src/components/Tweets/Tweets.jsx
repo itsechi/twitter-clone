@@ -28,6 +28,7 @@ export const Tweets = (props) => {
       })
     );
     setTweets(data);
+    props.setTweets(data.length);
   };
 
   const getUser = async (ref) => {
