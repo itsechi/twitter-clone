@@ -5,15 +5,23 @@ import { Link } from 'react-router-dom';
 
 export const Header = (props) => {
   const [active, setActive] = React.useState('home');
-  const {user} = props;
+  const { user } = props;
   const username = user && props.user.email.split('@')[0];
 
   return (
     <header className={styles.header}>
       <div>
-        <Link to="/home" className={styles.headerLink}>
+        <Link
+          to="/home"
+          className={styles.headerLink}
+          onClick={() => setActive('home')}
+        >
           <svg>
-            <use href={`${icons}#home`}></use>
+            <use
+              href={
+                active === 'home' ? `${icons}#homeClicked` : `${icons}#home`
+              }
+            ></use>
           </svg>
           <span
             className={[
@@ -27,11 +35,28 @@ export const Header = (props) => {
 
         {user && (
           <>
-            <Link to={`/${username}`} className={styles.headerLink}>
+            <Link
+              to={`/${username}`}
+              className={styles.headerLink}
+              onClick={() => setActive('profile')}
+            >
               <svg>
-                <use href={`${icons}#profile`}></use>
+                <use
+                  href={
+                    active === 'profile'
+                      ? `${icons}#profileClicked`
+                      : `${icons}#profile`
+                  }
+                ></use>
               </svg>
-              <span className={styles.headerText}>Profile</span>
+              <span
+                className={[
+                  styles.headerText,
+                  active === 'profile' ? styles.active : '',
+                ].join(' ')}
+              >
+                Profile
+              </span>
             </Link>
 
             <div className={styles.headerLink} onClick={props.signOut}>
