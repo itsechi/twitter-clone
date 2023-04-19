@@ -28,9 +28,9 @@ export const Profile = (props) => {
   }, [routeParams]);
 
   return (
-    <>
+    <main className={styles.profile}>
       {user && (
-        <main className={styles.profile}>
+        <>
           <div className={styles.header}>
             <div className={styles.headerIcon}>
               <svg>
@@ -72,8 +72,8 @@ export const Profile = (props) => {
           />
 
           <Tweets openModal={props.openModal} user={user.username} />
-        </main>
+        </>
       )}
-    </>
+    </main>
   );
 };
