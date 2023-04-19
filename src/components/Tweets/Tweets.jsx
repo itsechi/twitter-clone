@@ -41,7 +41,7 @@ export const Tweets = (props) => {
 
   React.useEffect(() => {
     getTweets();
-  }, []);
+  }, [props.user]);
 
   const displayTweets =
     tweets &&

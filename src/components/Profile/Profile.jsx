@@ -25,7 +25,7 @@ export const Profile = (props) => {
 
   React.useEffect(() => {
     getUser(routeParams.id);
-  }, []);
+  }, [routeParams]);
 
   return (
     <>
