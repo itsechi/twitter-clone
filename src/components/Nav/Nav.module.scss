@@ -7,7 +7,6 @@
 
 .navLink {
   text-decoration: none;
-  color: rgb(83, 100, 113);
   font-size: 15px;
   width: 100%;
   display: flex;
@@ -16,10 +15,10 @@
   transition: background-color 0.2s;
   outline: none;
   border: none;
-  background-color: white;
   cursor: pointer;
   font-family: inherit;
   font-weight: 500;
+  background: none;
 
   &:hover {
     background-color: rgba(15, 20, 25, 0.1);
@@ -43,5 +42,4 @@
 .navTextActive {
   color: rgba(0, 0, 0, 1.00);
   font-weight: 700;
-
 }
