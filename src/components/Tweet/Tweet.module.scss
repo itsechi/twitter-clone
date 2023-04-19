@@ -11,6 +11,10 @@
   }
 }
 
+a {
+  text-decoration: none;
+}
+
 .tweetContent {
   width: 100%;
 }
@@ -19,10 +23,15 @@
   color: rgb(15, 20, 25);
   font-weight: 700;
   font-size: 15px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .username {
   margin-left: 4px;
+  color: rgb(83, 100, 113);
 }
 
 .date {

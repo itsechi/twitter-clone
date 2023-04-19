@@ -12,11 +12,17 @@ export const Tweet = (props) => {
 
   return (
     <article className={styles.tweet}>
-      <img className={styles.profilePic} src={data.user.profilePicture}></img>
+      <Link to={`/${data.user.username}`}>
+        <img className={styles.profilePic} src={data.user.profilePicture}></img>
+      </Link>
       <div className={styles.tweetContent}>
         <div>
-        <Link to={`/${data.user.username}`} className={styles.displayName}>{data.user.displayName}</Link>
-          <a className={styles.username}>@{data.user.username}</a>
+          <Link to={`/${data.user.username}`} className={styles.displayName}>
+            {data.user.displayName}
+          </Link>
+          <Link to={`/${data.user.username}`} className={styles.username}>
+            @{data.user.username}
+          </Link>
           <span className={styles.dot}>·</span>
           <a className={styles.date}>{formattedDate}</a>
         </div>

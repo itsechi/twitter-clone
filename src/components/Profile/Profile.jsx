@@ -44,7 +44,14 @@ export const Profile = (props) => {
           </div>
 
           <div className={styles.images}>
-            <img className={styles.banner} src={user.bannerPicture}></img>
+            <img
+              className={styles.banner}
+              src={
+                user.bannerPicture
+                  ? user.bannerPicture
+                  : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
+              }
+            ></img>
             <img className={styles.profilePic} src={user.profilePicture}></img>
           </div>
 
