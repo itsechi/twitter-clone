@@ -3,7 +3,7 @@ import icons from '../../assets/icons.svg';
 import React from 'react';
 import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '../../helpers/firebase';
 
 export const Tweet = (props) => {
@@ -11,18 +11,24 @@ export const Tweet = (props) => {
   const [liked, setLiked] = React.useState(false);
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
+  const username = props.user.email.split('@')[0];
 
   const updateLikes = async () => {
-    setLiked(true);
-    const username = props.user.email.split('@')[0];
+    setLiked(!liked);
     try {
       await updateDoc(doc(db, 'tweets', data.id), {
-        likes: arrayUnion(doc(db, `/profiles/${username}`)),
+        likes: liked
+          ? arrayRemove(doc(db, `/profiles/${username}`))
+          : arrayUnion(doc(db, `/profiles/${username}`)),
       });
     } catch (error) {
       console.error('Error saving user data fo Firebase Database', error);
     }
   };
+
+  React.useEffect(() => {
+    data.likes.some((item) => item.id === username) && setLiked(true);
+  }, [data]);
 
   return (
     <article className={styles.tweet}>
