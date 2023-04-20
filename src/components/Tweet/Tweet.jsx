@@ -3,12 +3,26 @@ import icons from '../../assets/icons.svg';
 import React from 'react';
 import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { db } from '../../helpers/firebase';
 
 export const Tweet = (props) => {
   const { data } = props;
-  const [liked, setLiked] = React.useState(data.liked);
+  const [liked, setLiked] = React.useState(false);
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
+
+  const updateLikes = async () => {
+    setLiked(true);
+    const username = props.user.email.split('@')[0];
+    try {
+      await updateDoc(doc(db, 'tweets', data.id), {
+        likes: arrayUnion(doc(db, `/profiles/${username}`)),
+      });
+    } catch (error) {
+      console.error('Error saving user data fo Firebase Database', error);
+    }
+  };
 
   return (
     <article className={styles.tweet}>
@@ -40,17 +54,22 @@ export const Tweet = (props) => {
             </svg>
           </div>
 
-          <div
-            className={[
-              styles.like,
-              styles.icon,
-              liked ? styles.liked : '',
-            ].join(' ')}
-            onClick={() => props.user && setLiked(!liked)}
-          >
-            <svg>
-              <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
-            </svg>
+          <div className={styles.iconContainer}>
+            <div
+              className={[
+                styles.like,
+                styles.icon,
+                liked ? styles.liked : '',
+              ].join(' ')}
+              onClick={() => updateLikes()}
+            >
+              <svg>
+                <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
+              </svg>
+            </div>
+            <span className={styles.number}>
+              {data.likes && data.likes.length}
+            </span>
           </div>
         </div>
       </div>

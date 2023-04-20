@@ -19,7 +19,7 @@ export const Tweets = (props) => {
       querySnapshot = await getDocs(collection(db, 'tweets'));
     }
     querySnapshot.forEach((doc) => {
-      data.push(doc.data());
+      data.push({...doc.data(), id: doc.id});
     });
     await Promise.all(
       data.map(async (tweet) => {
@@ -28,7 +28,7 @@ export const Tweets = (props) => {
       })
     );
     setTweets(data);
-    props.setTweets(data.length);
+    props.setTweets && props.setTweets(data.length);
   };
 
   const getUser = async (ref) => {
@@ -47,7 +47,7 @@ export const Tweets = (props) => {
   const displayTweets =
     tweets &&
     tweets.map((data, i) => {
-      return <Tweet key={i} openModal={props.openModal} data={data} />;
+      return <Tweet user={props.user} key={i} openModal={props.openModal} data={data} />;
     });
 
   return <section>{displayTweets}</section>;

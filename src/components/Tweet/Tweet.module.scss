@@ -107,3 +107,16 @@ svg {
   margin-right: 12px;
   flex-shrink: 0;
 }
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number {
+  margin-left: 4px;
+  line-height: 16px;
+  font-size: 13px;
+  color: rgb(83, 100, 113);
+}
