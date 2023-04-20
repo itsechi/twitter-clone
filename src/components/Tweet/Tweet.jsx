@@ -3,7 +3,13 @@ import icons from '../../assets/icons.svg';
 import React from 'react';
 import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
-import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
+} from 'firebase/firestore';
 import { db } from '../../helpers/firebase';
 
 export const Tweet = (props) => {
@@ -12,6 +18,7 @@ export const Tweet = (props) => {
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
   const username = props.user.email.split('@')[0];
+  const [amountOfLikes, setAmountOfLikes] = React.useState();
 
   const updateLikes = async () => {
     setLiked(!liked);
@@ -21,6 +28,9 @@ export const Tweet = (props) => {
           ? arrayRemove(doc(db, `/profiles/${username}`))
           : arrayUnion(doc(db, `/profiles/${username}`)),
       });
+      onSnapshot(doc(db, 'tweets', data.id), (doc) => {
+        setAmountOfLikes(doc.data().likes.length);
+      });
     } catch (error) {
       console.error('Error saving user data fo Firebase Database', error);
     }
@@ -28,6 +38,7 @@ export const Tweet = (props) => {
 
   React.useEffect(() => {
     data.likes.some((item) => item.id === username) && setLiked(true);
+    setAmountOfLikes(data.likes.length);
   }, [data]);
 
   return (
@@ -73,9 +84,7 @@ export const Tweet = (props) => {
                 <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
               </svg>
             </div>
-            <span className={styles.number}>
-              {data.likes && data.likes.length}
-            </span>
+            <span className={styles.number}>{amountOfLikes}</span>
           </div>
         </div>
       </div>
