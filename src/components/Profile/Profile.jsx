@@ -74,7 +74,8 @@ export const Profile = (props) => {
 
           <Tweets
             openModal={props.openModal}
-            user={user.username}
+            author={user.username}
+            user={props.user}
             setTweets={setTweets}
           />
         </>

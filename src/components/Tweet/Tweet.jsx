@@ -17,7 +17,7 @@ export const Tweet = (props) => {
   const [liked, setLiked] = React.useState(false);
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
-  const username = props.user.email.split('@')[0];
+  const username = props.user && props.user.email.split('@')[0];
   const [amountOfLikes, setAmountOfLikes] = React.useState();
 
   const updateLikes = async () => {

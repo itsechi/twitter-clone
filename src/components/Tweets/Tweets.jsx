@@ -6,7 +6,7 @@ import { collection, getDocs, getDoc, query, where } from 'firebase/firestore';
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
 
-  const getTweets = async (user = props.user) => {
+  const getTweets = async (user = props.author) => {
     let data = [];
     let querySnapshot;
     if (user) {
@@ -19,7 +19,7 @@ export const Tweets = (props) => {
       querySnapshot = await getDocs(collection(db, 'tweets'));
     }
     querySnapshot.forEach((doc) => {
-      data.push({...doc.data(), id: doc.id});
+      data.push({ ...doc.data(), id: doc.id });
     });
     await Promise.all(
       data.map(async (tweet) => {
@@ -42,12 +42,19 @@ export const Tweets = (props) => {
 
   React.useEffect(() => {
     getTweets();
-  }, [props.user]);
+  }, [props.author]);
 
   const displayTweets =
     tweets &&
     tweets.map((data, i) => {
-      return <Tweet user={props.user} key={i} openModal={props.openModal} data={data} />;
+      return (
+        <Tweet
+          user={props.user}
+          key={i}
+          openModal={props.openModal}
+          data={data}
+        />
+      );
     });
 
   return <section>{displayTweets}</section>;
