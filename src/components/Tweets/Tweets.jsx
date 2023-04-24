@@ -20,11 +20,16 @@ export const Tweets = (props) => {
     if (user) {
       const tweetsQuery = query(
         collection(db, 'tweets'),
-        where('username', '==', user)
+        where('username', '==', user),
+        orderBy('date', 'desc')
       );
       querySnapshot = await getDocs(tweetsQuery);
     } else {
-      querySnapshot = await getDocs(collection(db, 'tweets'));
+      const tweetsQuery = query(
+        collection(db, 'tweets'),
+        orderBy('date', 'desc')
+      );
+      querySnapshot = await getDocs(tweetsQuery);
     }
     querySnapshot.forEach((doc) => {
       data.push({ ...doc.data(), id: doc.id });
