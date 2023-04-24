@@ -13,7 +13,7 @@ export const Home = (props) => {
         <h2 className={styles.title}>Home</h2>
         <Nav feed={feed} setFeed={setFeed} ids={['For you', 'Following']} />
       </div>
-      {props.user && <TweetInput profilePic={props.user.photoURL} />}
+      {props.user && <TweetInput user={props.user} />}
       <Tweets user={props.user} openModal={props.openModal} />
     </main>
   );
