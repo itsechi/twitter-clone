@@ -21,6 +21,7 @@ export const Tweet = (props) => {
   const [amountOfLikes, setAmountOfLikes] = React.useState();
 
   const updateLikes = async () => {
+    if (!props.user) return;
     setLiked(!liked);
     try {
       await updateDoc(doc(db, 'tweets', data.id), {
