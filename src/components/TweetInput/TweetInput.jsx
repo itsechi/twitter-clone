@@ -18,6 +18,7 @@ export const TweetInput = (props) => {
     try {
       await addDoc(collection(db, 'tweets'), data);
       props.getTweets();
+      setTweet('');
     } catch (error) {
       console.error('Error saving tweet to Firebase Database', error);
     }
@@ -26,6 +27,8 @@ export const TweetInput = (props) => {
   const handleChange = (e) => {
     setTweet(e.target.value);
   };
+
+  const buttonDisabled = tweet.length > 0 ? false : true;
 
   return (
     <div className={styles.tweet}>
@@ -38,7 +41,11 @@ export const TweetInput = (props) => {
           value={tweet}
           onChange={handleChange}
         ></input>
-        <button className={styles.btn} onClick={() => sendTweet(tweet)}>
+        <button
+          disabled={buttonDisabled}
+          className={styles.btn}
+          onClick={() => sendTweet(tweet)}
+        >
           Tweet
         </button>
       </div>

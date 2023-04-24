@@ -84,7 +84,7 @@ export const Tweet = (props) => {
                 <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
               </svg>
             </div>
-            <span className={styles.number}>{amountOfLikes}</span>
+            <span className={styles.number}>{amountOfLikes === 0 ? '' : amountOfLikes}</span>
           </div>
         </div>
       </div>

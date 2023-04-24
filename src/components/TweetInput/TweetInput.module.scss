@@ -42,7 +42,12 @@
   border: none;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: rgb(26, 140, 216);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
   }
 }

@@ -28,6 +28,10 @@ export const Profile = (props) => {
     getUser(routeParams.id);
   }, [routeParams]);
 
+  const numberOfTweets = tweets
+    ? `${tweets} ${tweets === 1 ? 'Tweet' : 'Tweets'}`
+    : '0 Tweets';
+
   return (
     <main className={styles.profile}>
       {user && (
@@ -40,7 +44,7 @@ export const Profile = (props) => {
             </div>
             <div className={styles.headerText}>
               <h2 className={styles.headerTextLarge}>{user.displayName}</h2>
-              <p>{tweets && `${tweets} Tweets`}</p>
+              <p>{numberOfTweets}</p>
             </div>
           </div>
 
