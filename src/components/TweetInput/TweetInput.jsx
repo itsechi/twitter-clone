@@ -17,6 +17,7 @@ export const TweetInput = (props) => {
     };
     try {
       await addDoc(collection(db, 'tweets'), data);
+      props.getTweets();
     } catch (error) {
       console.error('Error saving tweet to Firebase Database', error);
     }
