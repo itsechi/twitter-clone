@@ -72,7 +72,9 @@ export const Tweets = (props) => {
 
   return (
     <>
-      {props.user && <TweetInput getTweets={getTweets} user={props.user} />}
+      {props.user && !props.author && (
+        <TweetInput getTweets={getTweets} user={props.user} />
+      )}
       <section>{displayTweets}</section>
     </>
   );
