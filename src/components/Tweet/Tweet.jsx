@@ -13,11 +13,11 @@ import {
 import { db } from '../../helpers/firebase';
 
 export const Tweet = (props) => {
-  const { data } = props;
   const [liked, setLiked] = React.useState(false);
+  const [amountOfLikes, setAmountOfLikes] = React.useState();
+  const { data } = props;
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
-  const [amountOfLikes, setAmountOfLikes] = React.useState();
 
   const updateLikes = async () => {
     if (!props.loggedUser) return;

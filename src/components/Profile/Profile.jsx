@@ -19,6 +19,8 @@ export const Profile = (props) => {
   const [feed, setFeed] = React.useState('Tweets');
   const [user, setUser] = React.useState();
   const [tweets, setTweets] = React.useState();
+  const [followed, setFollowed] = React.useState();
+  const [followerAmount, setFollowerAmount] = React.useState();
 
   const getUser = async (username) => {
     const userQuery = query(
@@ -39,9 +41,9 @@ export const Profile = (props) => {
           doc(db, `/profiles/${props.loggedUser.username}`)
         ),
       });
-      // onSnapshot(doc(db, 'tweets', data.id), (doc) => {
-      //   setAmountOfLikes(doc.data().likes.length);
-      // });
+      onSnapshot(doc(db, 'profiles', routeParams.id), (doc) => {
+        setFollowerAmount(doc.data().followers.length);
+      });
     } catch (error) {
       console.error('Error saving user data fo Firebase Database', error);
     }
@@ -49,6 +51,7 @@ export const Profile = (props) => {
 
   React.useEffect(() => {
     getUser(routeParams.id);
+    user && setFollowerAmount(user.followers.length);
   }, [routeParams]);
 
   const numberOfTweets = tweets
@@ -103,7 +106,7 @@ export const Profile = (props) => {
               </p>
               <p>
                 <span className={styles.count}>
-                  {user.followers && user.followers.length}
+                  {user.followers && followerAmount}
                 </span>{' '}
                 Followers
               </p>
