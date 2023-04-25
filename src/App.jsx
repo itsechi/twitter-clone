@@ -6,7 +6,7 @@ import { Profile } from './components/Profile/Profile';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './helpers/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from './helpers/firebase';
 import React from 'react';
 import {
@@ -41,14 +41,21 @@ function App() {
       followers: [],
       following: [],
     };
-    try {
-      await setDoc(doc(db, 'profiles', userData.username), {
-        ...userData,
-      });
-    } catch (error) {
-      console.error('Error saving user data fo Firebase Database', error);
+    const docRef = doc(db, 'profiles', userData.username);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      try {
+        await setDoc(doc(db, 'profiles', userData.username), {
+          ...userData,
+        });
+      } catch (error) {
+        console.error('Error saving user data fo Firebase Database', error);
+      }
     }
     setLoggedUser(userData);
+    onSnapshot(docRef, (doc) => {
+      setLoggedUser(doc.data());
+    });
   };
 
   const signInWithGoogle = () => {

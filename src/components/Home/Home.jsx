@@ -12,7 +12,11 @@ export const Home = (props) => {
         <h2 className={styles.title}>Home</h2>
         <Nav feed={feed} setFeed={setFeed} ids={['For you', 'Following']} />
       </div>
-      <Tweets loggedUser={props.loggedUser} openModal={props.openModal} />
+      <Tweets
+        feed={feed}
+        loggedUser={props.loggedUser}
+        openModal={props.openModal}
+      />
     </main>
   );
 };
