@@ -6,6 +6,13 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../helpers/firebase';
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
+} from 'firebase/firestore';
 
 export const Profile = (props) => {
   const routeParams = useParams();
@@ -22,6 +29,22 @@ export const Profile = (props) => {
     const user = querySnapshot.docs[0];
     if (!user) return;
     setUser(user.data());
+  };
+
+  const updateFollowing = async () => {
+    if (!props.loggedUser) return;
+    try {
+      await updateDoc(doc(db, 'profiles', routeParams.id), {
+        followers: arrayUnion(
+          doc(db, `/profiles/${props.loggedUser.username}`)
+        ),
+      });
+      // onSnapshot(doc(db, 'tweets', data.id), (doc) => {
+      //   setAmountOfLikes(doc.data().likes.length);
+      // });
+    } catch (error) {
+      console.error('Error saving user data fo Firebase Database', error);
+    }
   };
 
   React.useEffect(() => {
@@ -62,7 +85,9 @@ export const Profile = (props) => {
 
           <div className={styles.info}>
             <div className={styles.followBar}>
-              <button className={styles.followBtn}>Follow</button>
+              <button className={styles.followBtn} onClick={updateFollowing}>
+                Follow
+              </button>
             </div>
 
             <h2 className={styles.displayName}>{user.displayName}</h2>
@@ -70,8 +95,18 @@ export const Profile = (props) => {
             <p className={styles.description}>{user.description}</p>
 
             <div className={styles.followerCount}>
-              <p className={styles.countText}><span className={styles.count}>{user.following && user.following.length}</span> Following</p>
-              <p><span className={styles.count}>{user.followers && user.followers.length}</span> Followers</p>
+              <p className={styles.countText}>
+                <span className={styles.count}>
+                  {user.following && user.following.length}
+                </span>{' '}
+                Following
+              </p>
+              <p>
+                <span className={styles.count}>
+                  {user.followers && user.followers.length}
+                </span>{' '}
+                Followers
+              </p>
             </div>
           </div>
 

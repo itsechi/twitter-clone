@@ -7,12 +7,11 @@ export const TweetInput = (props) => {
   const [tweet, setTweet] = React.useState('');
 
   const sendTweet = async (input) => {
-    const username = props.user.email.split('@')[0];
     const data = {
       text: input,
-      username: username,
+      username: props.loggedUser.username,
       likes: [],
-      user: doc(db, `/profiles/${username}`),
+      user: doc(db, `/profiles/${props.loggedUser.username}`),
       date: serverTimestamp(),
     };
     try {
@@ -32,7 +31,10 @@ export const TweetInput = (props) => {
 
   return (
     <div className={styles.tweet}>
-      <img className={styles.profilePic} src={props.user.photoURL}></img>
+      <img
+        className={styles.profilePic}
+        src={props.loggedUser.profilePicture}
+      ></img>
       <div className={styles.tweetInput}>
         <input
           className={styles.input}

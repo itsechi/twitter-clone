@@ -17,17 +17,16 @@ export const Tweet = (props) => {
   const [liked, setLiked] = React.useState(false);
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
-  const username = props.user && props.user.email.split('@')[0];
   const [amountOfLikes, setAmountOfLikes] = React.useState();
 
   const updateLikes = async () => {
-    if (!props.user) return;
+    if (!props.loggedUser) return;
     setLiked(!liked);
     try {
       await updateDoc(doc(db, 'tweets', data.id), {
         likes: liked
-          ? arrayRemove(doc(db, `/profiles/${username}`))
-          : arrayUnion(doc(db, `/profiles/${username}`)),
+          ? arrayRemove(doc(db, `/profiles/${props.loggedUser.username}`))
+          : arrayUnion(doc(db, `/profiles/${props.loggedUser.username}`)),
       });
       onSnapshot(doc(db, 'tweets', data.id), (doc) => {
         setAmountOfLikes(doc.data().likes.length);
@@ -38,7 +37,8 @@ export const Tweet = (props) => {
   };
 
   React.useEffect(() => {
-    data.likes.some((item) => item.id === username) && setLiked(true);
+    props.loggedUser && data.likes.some((item) => item.id === props.loggedUser.username) &&
+      setLiked(true);
     setAmountOfLikes(data.likes.length);
   }, [data]);
 
@@ -85,7 +85,9 @@ export const Tweet = (props) => {
                 <use href={liked ? `${icons}#liked` : `${icons}#like`}></use>
               </svg>
             </div>
-            <span className={styles.number}>{amountOfLikes === 0 ? '' : amountOfLikes}</span>
+            <span className={styles.number}>
+              {amountOfLikes === 0 ? '' : amountOfLikes}
+            </span>
           </div>
         </div>
       </div>

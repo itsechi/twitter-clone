@@ -62,7 +62,7 @@ export const Tweets = (props) => {
     tweets.map((data, i) => {
       return (
         <Tweet
-          user={props.user}
+          loggedUser={props.loggedUser}
           key={i}
           openModal={props.openModal}
           data={data}
@@ -72,8 +72,8 @@ export const Tweets = (props) => {
 
   return (
     <>
-      {props.user && !props.author && (
-        <TweetInput getTweets={getTweets} user={props.user} />
+      {props.loggedUser && !props.author && (
+        <TweetInput getTweets={getTweets} loggedUser={props.loggedUser} />
       )}
       <section>{displayTweets}</section>
     </>

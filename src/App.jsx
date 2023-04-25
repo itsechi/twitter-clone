@@ -19,6 +19,7 @@ import {
 function App() {
   const [user] = useAuthState(auth);
   const [modal, setModal] = React.useState(false);
+  const [loggedUser, setLoggedUser] = React.useState();
 
   React.useEffect(() => {
     setModal(false);
@@ -47,6 +48,7 @@ function App() {
     } catch (error) {
       console.error('Error saving user data fo Firebase Database', error);
     }
+    setLoggedUser(userData);
   };
 
   const signInWithGoogle = () => {
@@ -64,14 +66,14 @@ function App() {
         {modal && (
           <LoginModal signInWithGoogle={signInWithGoogle} setModal={setModal} />
         )}
-        <Header signOut={signOutUser} user={user} />
+        <Header signOut={signOutUser} loggedUser={loggedUser} />
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route
             path="/home"
-            element={<Home openModal={openModal} user={user} />}
+            element={<Home openModal={openModal} loggedUser={loggedUser} />}
           />
-          <Route path="/:id" element={<Profile user={user} />} />
+          <Route path="/:id" element={<Profile loggedUser={loggedUser} />} />
         </Routes>
 
         {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
