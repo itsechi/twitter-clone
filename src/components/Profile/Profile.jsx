@@ -102,19 +102,20 @@ export const Profile = (props) => {
 
           <div className={styles.info}>
             <div className={styles.followBar}>
-              {props.loggedUser && (
-                <button
-                  className={[
-                    followed ? styles.unfollowBtn : styles.followBtn,
-                    styles.btn,
-                  ].join(' ')}
-                  onClick={updateFollowing}
-                  onMouseOver={() => followed && setButtonText('Unfollow')}
-                  onMouseLeave={() => followed && setButtonText('Following')}
-                >
-                  {buttonText}
-                </button>
-              )}
+              {props.loggedUser &&
+                props.loggedUser.username !== routeParams.id && (
+                  <button
+                    className={[
+                      followed ? styles.unfollowBtn : styles.followBtn,
+                      styles.btn,
+                    ].join(' ')}
+                    onClick={updateFollowing}
+                    onMouseOver={() => followed && setButtonText('Unfollow')}
+                    onMouseLeave={() => followed && setButtonText('Following')}
+                  >
+                    {buttonText}
+                  </button>
+                )}
             </div>
 
             <h2 className={styles.displayName}>{user.displayName}</h2>
