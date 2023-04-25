@@ -49,6 +49,11 @@ export const Profile = (props) => {
           ? arrayRemove(doc(db, `/profiles/${props.loggedUser.username}`))
           : arrayUnion(doc(db, `/profiles/${props.loggedUser.username}`)),
       });
+      await updateDoc(doc(db, 'profiles', props.loggedUser.username), {
+        following: followed
+          ? arrayRemove(doc(db, `/profiles/${routeParams.id}`))
+          : arrayUnion(doc(db, `/profiles/${routeParams.id}`)),
+      });
       onSnapshot(doc(db, 'profiles', routeParams.id), (doc) => {
         setFollowerAmount(doc.data().followers.length);
       });
