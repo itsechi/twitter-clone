@@ -59,11 +59,11 @@ export const Tweets = (props) => {
 
   const displayTweets =
     tweets &&
-    tweets.map((data, i) => {
+    tweets.map((data) => {
       return (
         <Tweet
           loggedUser={props.loggedUser}
-          key={i}
+          key={data.id}
           openModal={props.openModal}
           data={data}
         />

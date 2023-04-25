@@ -20,7 +20,6 @@ export const Tweet = (props) => {
   const formattedDate = format(date, 'MMM d');
 
   const updateLikes = async () => {
-    if (!props.loggedUser) return;
     setLiked(!liked);
     try {
       await updateDoc(doc(db, 'tweets', data.id), {
@@ -37,7 +36,8 @@ export const Tweet = (props) => {
   };
 
   React.useEffect(() => {
-    props.loggedUser && data.likes.some((item) => item.id === props.loggedUser.username) &&
+    props.loggedUser &&
+      data.likes.some((item) => item.id === props.loggedUser.username) &&
       setLiked(true);
     setAmountOfLikes(data.likes.length);
   }, [data]);
