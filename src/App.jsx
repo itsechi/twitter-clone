@@ -45,7 +45,7 @@ function App() {
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
       try {
-        await setDoc(doc(db, 'profiles', userData.username), {
+        await setDoc(docRef, {
           ...userData,
         });
       } catch (error) {

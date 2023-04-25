@@ -13,7 +13,6 @@ import { TweetInput } from '../TweetInput/TweetInput';
 
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
-  // console.log(props.feed === 'Following')
 
   const getTweets = async (user = props.author) => {
     let data = [];
@@ -27,6 +26,7 @@ export const Tweets = (props) => {
       querySnapshot = await getDocs(tweetsQuery);
     } else if (props.feed === 'Following') {
       const ids = props.loggedUser.following.map((user) => user.id);
+      if (ids.length < 1) return setTweets('');
       const tweetsQuery = query(
         collection(db, 'tweets'),
         where('username', 'in', ids),
