@@ -58,7 +58,6 @@
   display: block;
 }
 
-
 .profilePic {
   position: absolute;
   left: 12px;
@@ -69,7 +68,6 @@
   background-color: #fff;
   min-width: 48px;
 }
-
 
 .followBar {
   display: flex;
@@ -120,8 +118,25 @@
   font-size: 15px;
   word-wrap: break-word;
   line-height: 20px;
+  margin-bottom: 12px;
 }
 
+.followerCount {
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: rgb(83, 100, 113);
+}
+
+.countText {
+  margin-right: 20px;
+}
+
+.count {
+  color: rgb(15, 20, 25);
+  font-weight: 700;
+}
 
 .nav {
   border-bottom: 1px solid rgb(239, 243, 244);

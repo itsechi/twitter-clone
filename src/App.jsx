@@ -37,6 +37,8 @@ function App() {
       username: user.email.split('@')[0],
       displayName: user.displayName,
       profilePicture: user.photoURL,
+      followers: [],
+      following: [],
     };
     try {
       await setDoc(doc(db, 'profiles', userData.username), {

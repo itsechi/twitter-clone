@@ -68,6 +68,11 @@ export const Profile = (props) => {
             <h2 className={styles.displayName}>{user.displayName}</h2>
             <p className={styles.username}>@{user.username}</p>
             <p className={styles.description}>{user.description}</p>
+
+            <div className={styles.followerCount}>
+              <p className={styles.countText}><span className={styles.count}>{user.following && user.following.length}</span> Following</p>
+              <p><span className={styles.count}>{user.followers && user.followers.length}</span> Followers</p>
+            </div>
           </div>
 
           <Nav
