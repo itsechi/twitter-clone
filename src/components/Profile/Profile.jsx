@@ -36,7 +36,7 @@ export const Profile = (props) => {
     const followStatus = user
       .data()
       .followers.some(
-        (item) => props.user && item.id === props.loggedUser.username
+        (item) => props.loggedUser && item.id === props.loggedUser.username
       );
     setFollowed(followStatus);
     !followStatus ? setButtonText('Follow') : setButtonText('Following');
@@ -102,7 +102,7 @@ export const Profile = (props) => {
 
           <div className={styles.info}>
             <div className={styles.followBar}>
-              {
+              {props.loggedUser && (
                 <button
                   className={[
                     followed ? styles.unfollowBtn : styles.followBtn,
@@ -114,7 +114,7 @@ export const Profile = (props) => {
                 >
                   {buttonText}
                 </button>
-              }
+              )}
             </div>
 
             <h2 className={styles.displayName}>{user.displayName}</h2>

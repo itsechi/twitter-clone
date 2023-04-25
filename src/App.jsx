@@ -58,6 +58,7 @@ function App() {
 
   const signOutUser = () => {
     signOut(auth);
+    setLoggedUser('');
   };
 
   return (
@@ -73,7 +74,7 @@ function App() {
             path="/home"
             element={<Home openModal={openModal} loggedUser={loggedUser} />}
           />
-          <Route path="/:id" element={<Profile user={user} loggedUser={loggedUser} />} />
+          <Route path="/:id" element={<Profile loggedUser={loggedUser} />} />
         </Routes>
 
         {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
