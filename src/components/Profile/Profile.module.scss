@@ -76,8 +76,7 @@
   height: 68px;
 }
 
-.followBtn {
-  background-color: rgb(15, 20, 25);
+.btn {
   outline: none;
   border: none;
   color: white;
@@ -89,6 +88,22 @@
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s;
+}
+
+.unfollowBtn {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(15, 20, 25);
+  border: 1px solid rgb(207, 217, 222);
+
+  &:hover {
+    background-color: rgba(244, 33, 46, 0.1);
+    border-color: rgb(253, 201, 206);
+    color: rgb(244, 33, 46);
+  }
+}
+
+.followBtn {
+  background-color: rgb(15, 20, 25);
 
   &:hover {
     background-color: rgb(39, 44, 48);

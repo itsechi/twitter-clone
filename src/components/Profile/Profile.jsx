@@ -19,8 +19,9 @@ export const Profile = (props) => {
   const [feed, setFeed] = React.useState('Tweets');
   const [user, setUser] = React.useState();
   const [tweets, setTweets] = React.useState();
-  const [followed, setFollowed] = React.useState();
   const [followerAmount, setFollowerAmount] = React.useState();
+  const [followed, setFollowed] = React.useState(false);
+  const [buttonText, setButtonText] = React.useState('');
 
   const getUser = async (username) => {
     const userQuery = query(
@@ -31,28 +32,41 @@ export const Profile = (props) => {
     const user = querySnapshot.docs[0];
     if (!user) return;
     setUser(user.data());
+    setFollowerAmount(user.data().followers.length);
+    const followStatus = user
+      .data()
+      .followers.some(
+        (item) => props.user && item.id === props.loggedUser.username
+      );
+    setFollowed(followStatus);
+    !followStatus ? setButtonText('Follow') : setButtonText('Following');
   };
 
   const updateFollowing = async () => {
-    if (!props.loggedUser) return;
     try {
       await updateDoc(doc(db, 'profiles', routeParams.id), {
-        followers: arrayUnion(
-          doc(db, `/profiles/${props.loggedUser.username}`)
-        ),
+        followers: followed
+          ? arrayRemove(doc(db, `/profiles/${props.loggedUser.username}`))
+          : arrayUnion(doc(db, `/profiles/${props.loggedUser.username}`)),
       });
       onSnapshot(doc(db, 'profiles', routeParams.id), (doc) => {
         setFollowerAmount(doc.data().followers.length);
       });
+      if (followed) {
+        setFollowed(false);
+        setButtonText('Follow');
+      } else {
+        setFollowed(true);
+        setButtonText('Following');
+      }
     } catch (error) {
-      console.error('Error saving user data fo Firebase Database', error);
+      console.error('Error saving follower data to Firebase Database', error);
     }
   };
 
   React.useEffect(() => {
     getUser(routeParams.id);
-    user && setFollowerAmount(user.followers.length);
-  }, [routeParams]);
+  }, [routeParams.id, props.loggedUser]);
 
   const numberOfTweets = tweets
     ? `${tweets} ${tweets === 1 ? 'Tweet' : 'Tweets'}`
@@ -88,9 +102,19 @@ export const Profile = (props) => {
 
           <div className={styles.info}>
             <div className={styles.followBar}>
-              <button className={styles.followBtn} onClick={updateFollowing}>
-                Follow
-              </button>
+              {
+                <button
+                  className={[
+                    followed ? styles.unfollowBtn : styles.followBtn,
+                    styles.btn,
+                  ].join(' ')}
+                  onClick={updateFollowing}
+                  onMouseOver={() => followed && setButtonText('Unfollow')}
+                  onMouseLeave={() => followed && setButtonText('Following')}
+                >
+                  {buttonText}
+                </button>
+              }
             </div>
 
             <h2 className={styles.displayName}>{user.displayName}</h2>
@@ -99,16 +123,11 @@ export const Profile = (props) => {
 
             <div className={styles.followerCount}>
               <p className={styles.countText}>
-                <span className={styles.count}>
-                  {user.following && user.following.length}
-                </span>{' '}
+                <span className={styles.count}>{user.following.length}</span>{' '}
                 Following
               </p>
               <p>
-                <span className={styles.count}>
-                  {user.followers && followerAmount}
-                </span>{' '}
-                Followers
+                <span className={styles.count}>{followerAmount}</span> Followers
               </p>
             </div>
           </div>
