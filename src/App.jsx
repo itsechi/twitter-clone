@@ -3,6 +3,7 @@ import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
 import { Profile } from './components/Profile/Profile';
+import { FollowerList } from './components/FollowerList/FollowerList';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './helpers/firebase';
@@ -82,6 +83,8 @@ function App() {
             element={<Home openModal={openModal} loggedUser={loggedUser} />}
           />
           <Route path="/:id" element={<Profile loggedUser={loggedUser} />} />
+          <Route path="/:id/following" element={<FollowerList loggedUser={loggedUser} />} />
+          <Route path="/:id/followers" element={<FollowerList loggedUser={loggedUser} />} />
         </Routes>
 
         {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}

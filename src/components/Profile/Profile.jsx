@@ -13,6 +13,7 @@ import {
   arrayRemove,
   onSnapshot,
 } from 'firebase/firestore';
+import { Link } from 'react-router-dom';
 
 export const Profile = (props) => {
   const routeParams = useParams();
@@ -128,13 +129,18 @@ export const Profile = (props) => {
             <p className={styles.description}>{user.description}</p>
 
             <div className={styles.followerCount}>
-              <p className={styles.countText}>
-                <span className={styles.count}>{user.following.length}</span>{' '}
-                Following
-              </p>
-              <p>
-                <span className={styles.count}>{followerAmount}</span> Followers
-              </p>
+              <Link to={`./following`}>
+                <p className={styles.countText}>
+                  <span className={styles.count}>{user.following.length}</span>{' '}
+                  Following
+                </p>
+              </Link>
+              <Link to={`./followers`}>
+                <p>
+                  <span className={styles.count}>{followerAmount}</span>{' '}
+                  Followers
+                </p>
+              </Link>
             </div>
           </div>
 
