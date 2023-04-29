@@ -1,6 +1,6 @@
 import { getDoc } from 'firebase/firestore';
 
-export const getUser = async (ref) => {
+export const getUserFromRef = async (ref) => {
   const docRef = ref;
   const docSnap = await getDoc(docRef);
   let user;

@@ -1,6 +1,6 @@
 import { Tweet } from '../Tweet/Tweet';
 import { TweetInput } from '../TweetInput/TweetInput';
-import { getUser } from '../../helpers/getUser';
+import { getUserFromRef } from '../../helpers/getUserFromRef';
 import React from 'react';
 import { db } from '../../helpers/firebase';
 import {
@@ -46,7 +46,7 @@ export const Tweets = (props) => {
     });
     await Promise.all(
       data.map(async (tweet) => {
-        let user = await getUser(tweet.user);
+        let user = await getUserFromRef(tweet.user);
         tweet.user = user;
       })
     );

@@ -2,6 +2,7 @@ import styles from './Profile.module.scss';
 import icons from '../../assets/icons.svg';
 import { Nav } from '../Nav/Nav';
 import { Tweets } from '../Tweets/Tweets';
+import { getUserFromQuery } from '../../helpers/getUserFromQuery';
 
 // react
 import React from 'react';
@@ -15,10 +16,6 @@ import {
   arrayUnion,
   arrayRemove,
   onSnapshot,
-  collection,
-  getDocs,
-  query,
-  where,
 } from 'firebase/firestore';
 
 export const Profile = (props) => {
@@ -31,12 +28,7 @@ export const Profile = (props) => {
   const [buttonText, setButtonText] = React.useState('');
 
   const getUser = async (username) => {
-    const userQuery = query(
-      collection(db, 'profiles'),
-      where('username', '==', username)
-    );
-    const querySnapshot = await getDocs(userQuery);
-    const user = querySnapshot.docs[0];
+    const user = await getUserFromQuery(username);
     if (!user) return;
     setUser(user.data());
     setFollowerAmount(user.data().followers.length);

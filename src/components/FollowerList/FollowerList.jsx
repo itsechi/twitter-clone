@@ -1,10 +1,7 @@
 import styles from './FollowerList.module.scss';
 import { Nav } from '../Nav/Nav';
-import { getUser } from '../../helpers/getUser';
-
-// firebase
-import { db } from '../../helpers/firebase';
-import { query, collection, where, getDocs } from 'firebase/firestore';
+import { getUserFromRef } from '../../helpers/getUserFromRef';
+import { getUserFromQuery } from '../../helpers/getUserFromQuery';
 
 // react
 import React from 'react';
@@ -25,23 +22,18 @@ export const FollowerList = () => {
   }, []);
 
   const getFollowerList = async (username) => {
-    const userQuery = query(
-      collection(db, 'profiles'),
-      where('username', '==', username)
-    );
-    const querySnapshot = await getDocs(userQuery);
-    const user = querySnapshot.docs[0];
+    const user = await getUserFromQuery(username);
     if (!user) return;
     let following = [];
     let followers = [];
 
     await Promise.all(
       user.data().following.map(async (data) => {
-        let user = await getUser(data);
+        let user = await getUserFromRef(data);
         following.push(user);
       }),
       user.data().followers.map(async (data) => {
-        let user = await getUser(data);
+        let user = await getUserFromRef(data);
         followers.push(user);
       })
     );
