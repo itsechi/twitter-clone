@@ -2,10 +2,11 @@ import styles from './FollowerList.module.scss';
 import { Nav } from '../Nav/Nav';
 import { getUserFromRef } from '../../helpers/getUserFromRef';
 import { getUserFromQuery } from '../../helpers/getUserFromQuery';
+import { followerSection } from './FollowerSection';
 
 // react
 import React from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 export const FollowerList = () => {
   const [feed, setFeed] = React.useState('');
@@ -40,45 +41,8 @@ export const FollowerList = () => {
     setFollowers(followers);
   };
 
-  const followingSection =
-    following &&
-    following.map((data) => {
-      return (
-        <Link to={`/${data.username}`} key={data.username}>
-          <div className={styles.account}>
-            <img
-              className={styles.profilePicture}
-              src={data.profilePicture}
-            ></img>
-            <div className={styles.info}>
-              <p className={styles.displayName}>{data.displayName}</p>
-              <p className={styles.username}>@{data.username}</p>
-              <p>{data.description}</p>
-            </div>
-          </div>
-        </Link>
-      );
-    });
-
-  const followersSection =
-    followers &&
-    followers.map((data) => {
-      return (
-        <Link to={`/${data.username}`} key={data.username}>
-          <div className={styles.account}>
-            <img
-              className={styles.profilePicture}
-              src={data.profilePicture}
-            ></img>
-            <div className={styles.info}>
-              <p className={styles.displayName}>{data.displayName}</p>
-              <p className={styles.username}>@{data.username}</p>
-              <p>{data.description}</p>
-            </div>
-          </div>
-        </Link>
-      );
-    });
+  const followingSection = following && followerSection(following);
+  const followersSection = followers && followerSection(followers);
 
   return (
     <main className={styles.followerList}>
@@ -88,8 +52,7 @@ export const FollowerList = () => {
         links={[`/${routeParams.id}/followers`, `/${routeParams.id}/following`]}
         ids={['Followers', 'Following']}
       />
-      {following && feed === 'Following' && followingSection}
-      {followers && feed === 'Followers' && followersSection}
+      {feed === 'Following' ? followingSection : followersSection}
     </main>
   );
 };

@@ -27,15 +27,21 @@ export const Profile = (props) => {
   const [followed, setFollowed] = React.useState(false);
   const [buttonText, setButtonText] = React.useState('');
 
+  React.useEffect(() => {
+    getUser(routeParams.id);
+  }, [routeParams.id, props.loggedUser]);
+
   const getUser = async (username) => {
     const user = await getUserFromQuery(username);
     if (!user) return;
     setUser(user.data());
     setFollowerAmount(user.data().followers.length);
+
+    // update the button
     const followStatus = user
       .data()
       .followers.some(
-        (item) => props.loggedUser && item.id === props.loggedUser.username
+        (user) => props.loggedUser && user.id === props.loggedUser.username
       );
     setFollowed(followStatus);
     !followStatus ? setButtonText('Follow') : setButtonText('Following');
@@ -43,11 +49,13 @@ export const Profile = (props) => {
 
   const updateFollowing = async () => {
     try {
+      // update the follower count of the account the logged user has followed
       await updateDoc(doc(db, 'profiles', routeParams.id), {
         followers: followed
           ? arrayRemove(doc(db, `/profiles/${props.loggedUser.username}`))
           : arrayUnion(doc(db, `/profiles/${props.loggedUser.username}`)),
       });
+      // update the following count of the logged user
       await updateDoc(doc(db, 'profiles', props.loggedUser.username), {
         following: followed
           ? arrayRemove(doc(db, `/profiles/${routeParams.id}`))
@@ -56,6 +64,8 @@ export const Profile = (props) => {
       onSnapshot(doc(db, 'profiles', routeParams.id), (doc) => {
         setFollowerAmount(doc.data().followers.length);
       });
+
+      // update the button
       if (followed) {
         setFollowed(false);
         setButtonText('Follow');
@@ -67,10 +77,6 @@ export const Profile = (props) => {
       console.error('Error saving follower data to Firebase Database', error);
     }
   };
-
-  React.useEffect(() => {
-    getUser(routeParams.id);
-  }, [routeParams.id, props.loggedUser]);
 
   const numberOfTweets = tweets
     ? `${tweets} ${tweets === 1 ? 'Tweet' : 'Tweets'}`
