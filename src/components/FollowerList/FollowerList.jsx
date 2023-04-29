@@ -42,8 +42,6 @@ export const FollowerList = () => {
     );
     setFollowing(following);
     setFollowers(followers);
-    console.log(following);
-    console.log(followers);
   };
 
   const getUser = async (ref) => {

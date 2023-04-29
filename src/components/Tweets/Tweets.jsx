@@ -25,6 +25,7 @@ export const Tweets = (props) => {
       );
       querySnapshot = await getDocs(tweetsQuery);
     } else if (props.feed === 'Following') {
+      if (!props.loggedUser) return setTweets([]);
       const ids = props.loggedUser.following.map((user) => user.id);
       if (ids.length < 1) return setTweets('');
       const tweetsQuery = query(

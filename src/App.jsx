@@ -80,11 +80,20 @@ function App() {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route
             path="/home"
-            element={<Home openModal={openModal} loggedUser={loggedUser} />}
+            element={<Home loggedUser={loggedUser} openModal={openModal} />}
           />
-          <Route path="/:id" element={<Profile loggedUser={loggedUser} />} />
-          <Route path="/:id/following" element={<FollowerList loggedUser={loggedUser} />} />
-          <Route path="/:id/followers" element={<FollowerList loggedUser={loggedUser} />} />
+          <Route
+            path="/:id"
+            element={<Profile loggedUser={loggedUser} openModal={openModal} />}
+          />
+          <Route
+            path="/:id/following"
+            element={<FollowerList loggedUser={loggedUser} />}
+          />
+          <Route
+            path="/:id/followers"
+            element={<FollowerList loggedUser={loggedUser} />}
+          />
         </Routes>
 
         {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}

@@ -20,6 +20,7 @@ export const Tweet = (props) => {
   const formattedDate = format(date, 'MMM d');
 
   const updateLikes = async () => {
+    if (!props.loggedUser) return;
     setLiked(!liked);
     try {
       await updateDoc(doc(db, 'tweets', data.id), {
