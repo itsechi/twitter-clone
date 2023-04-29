@@ -46,11 +46,11 @@ export const Tweet = (props) => {
   return (
     <article className={styles.tweet}>
       <Link to={`/${data.user.username}`}>
-        <img className={styles.profilePic} src={data.user.profilePicture}></img>
+        <img className="profilePic" src={data.user.profilePicture}></img>
       </Link>
       <div className={styles.tweetContent}>
         <div>
-          <Link to={`/${data.user.username}`} className={styles.displayName}>
+          <Link to={`/${data.user.username}`} className={[styles.displayName, "textBold"].join(' ')}>
             {data.user.displayName}
           </Link>
           <Link to={`/${data.user.username}`} className={styles.username}>
@@ -59,7 +59,7 @@ export const Tweet = (props) => {
           <span className={styles.dot}>·</span>
           <a className={styles.date}>{formattedDate}</a>
         </div>
-        <p className={styles.text}>{data.text}</p>
+        <p className={[styles.text, "textRegular"].join(' ')}>{data.text}</p>
         <div className={styles.icons} onClick={props.openModal} data-id="icons">
           <div className={[styles.chat, styles.icon].join(' ')}>
             <svg>

@@ -83,7 +83,7 @@ export const Profile = (props) => {
     : '0 Tweets';
 
   return (
-    <main className={styles.profile}>
+    <main className="main">
       {user && (
         <>
           <div className={styles.header}>
@@ -93,7 +93,7 @@ export const Profile = (props) => {
               </svg>
             </div>
             <div className={styles.headerText}>
-              <h2 className={styles.headerTextLarge}>{user.displayName}</h2>
+              <h2 className={[styles.headerTextLarge, "textLarge"].join(' ')}>{user.displayName}</h2>
               <p>{numberOfTweets}</p>
             </div>
           </div>
@@ -118,6 +118,7 @@ export const Profile = (props) => {
                     className={[
                       followed ? styles.unfollowBtn : styles.followBtn,
                       styles.btn,
+                      "btn"
                     ].join(' ')}
                     onClick={updateFollowing}
                     onMouseOver={() => followed && setButtonText('Unfollow')}
@@ -128,20 +129,20 @@ export const Profile = (props) => {
                 )}
             </div>
 
-            <h2 className={styles.displayName}>{user.displayName}</h2>
-            <p className={styles.username}>@{user.username}</p>
-            <p className={styles.description}>{user.description}</p>
+            <h2 className="textLarge">{user.displayName}</h2>
+            <p className="textGray">@{user.username}</p>
+            <p className={[styles.description, "textRegular"].join(' ')}>{user.description}</p>
 
             <div className={styles.followerCount}>
               <Link to={`./following`}>
                 <p className={styles.countText}>
-                  <span className={styles.count}>{user.following.length}</span>{' '}
+                  <span className="textBold">{user.following.length}</span>{' '}
                   Following
                 </p>
               </Link>
               <Link to={`./followers`}>
                 <p>
-                  <span className={styles.count}>{followerAmount}</span>{' '}
+                  <span className="textBold">{followerAmount}</span>{' '}
                   Followers
                 </p>
               </Link>

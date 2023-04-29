@@ -1,4 +1,3 @@
-import styles from './FollowerList.module.scss';
 import { Nav } from '../Nav/Nav';
 import { getUserFromRef } from '../../helpers/getUserFromRef';
 import { getUserFromQuery } from '../../helpers/getUserFromQuery';
@@ -45,14 +44,16 @@ export const FollowerList = () => {
   const followersSection = followers && followerSection(followers);
 
   return (
-    <main className={styles.followerList}>
+    <main className="main">
       <Nav
         feed={feed}
         setFeed={setFeed}
         links={[`/${routeParams.id}/followers`, `/${routeParams.id}/following`]}
         ids={['Followers', 'Following']}
       />
-      {feed === 'Following' ? followingSection : followersSection}
+      <section>
+        {feed === 'Following' ? followingSection : followersSection}
+      </section>
     </main>
   );
 };

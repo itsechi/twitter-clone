@@ -11,7 +11,7 @@ export const NavLink = (props) => {
       <span
         className={[
           styles.navText,
-          props.feed === props.id ? styles.navTextActive : '',
+          props.feed === props.id ? 'textBold' : '',
         ].join(' ')}
       >
         {props.id}

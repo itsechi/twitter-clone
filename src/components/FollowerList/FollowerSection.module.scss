@@ -1,0 +1,16 @@
+@import '../../variables';
+
+.account {
+  padding: 12px 16px;
+  display: flex;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+}
+
+.description {
+  padding-top: 4px;
+}
+

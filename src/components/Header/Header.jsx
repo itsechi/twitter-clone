@@ -34,7 +34,7 @@ export const Header = (props) => {
           <span
             className={[
               styles.headerText,
-              active === 'home' ? styles.active : '',
+              active === 'home' ? 'textBold' : '',
             ].join(' ')}
           >
             Home
@@ -60,7 +60,7 @@ export const Header = (props) => {
               <span
                 className={[
                   styles.headerText,
-                  active === 'profile' ? styles.active : '',
+                  active === 'profile' ? 'textBold' : '',
                 ].join(' ')}
               >
                 Profile

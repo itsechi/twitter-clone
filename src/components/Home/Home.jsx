@@ -7,7 +7,7 @@ export const Home = (props) => {
   const [feed, setFeed] = React.useState('For you');
 
   return (
-    <main className={styles.home}>
+    <main className="main">
       <div className={styles.header}>
         <h2 className={styles.title}>Home</h2>
         <Nav feed={feed} setFeed={setFeed} ids={['For you', 'Following']} />

@@ -1,57 +1,54 @@
+@import '../../variables'; 
+
 .header {
   width: 275px;
   display: flex;
-  line-height: 24px;
   justify-content: flex-start;
+  line-height: 24px;
   font-size: 20px;
-  color: #0f1419;
 }
 
 .headerFixed {
-  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: fixed;
 }
 
 .logoLink {
-  color: rgb(29, 155, 240);
-  fill: currentColor;
-  border-radius: 50%;
+  padding: 10px;
   margin-left: 10px;
   margin-top: 8px;
-  padding: 10px;
+  border-radius: 50%;
+  color: $blue;
+  fill: currentColor;
   transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba(15, 20, 25, 0.1);
-  }
 
   & svg {
     transform: translateY(10%);
+  }
+
+  &:hover {
+    background-color: $grayHover;
   }
 }
 
 .headerLink {
   padding: 12px 20px;
-  border-radius: 9999px;
-  transition: background-color 0.2s;
-  display: flex;
-  text-decoration: none;
-  color: black;
   margin-top: 8px;
+  display: flex;
+  border-radius: 9999px;
+  color: $black;
+  text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.2s;
 
   &:hover {
-    background-color: rgba(15, 20, 25, 0.1);
+    background-color: $grayHover;
   }
 }
 
 .headerText {
   margin-left: 16px;
   margin-right: 8px;
-}
-
-.active {
-  font-weight: 700;
 }

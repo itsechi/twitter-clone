@@ -32,7 +32,7 @@ export const TweetInput = (props) => {
   return (
     <div className={styles.tweet}>
       <img
-        className={styles.profilePic}
+        className="profilePic"
         src={props.loggedUser.profilePicture}
       ></img>
       <div className={styles.tweetInput}>
@@ -45,7 +45,7 @@ export const TweetInput = (props) => {
         ></input>
         <button
           disabled={buttonDisabled}
-          className={styles.btn}
+          className={[styles.btn, "btn"].join(' ')}
           onClick={() => sendTweet(tweet)}
         >
           Tweet
