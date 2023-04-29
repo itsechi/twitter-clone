@@ -26,7 +26,6 @@ export const FollowerList = () => {
     if (!user) return;
     let following = [];
     let followers = [];
-
     await Promise.all(
       user.data().following.map(async (data) => {
         let user = await getUserFromRef(data);

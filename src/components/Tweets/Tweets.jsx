@@ -3,13 +3,7 @@ import { TweetInput } from '../TweetInput/TweetInput';
 import { getUserFromRef } from '../../helpers/getUserFromRef';
 import React from 'react';
 import { db } from '../../helpers/firebase';
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  orderBy,
-} from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
@@ -17,30 +11,33 @@ export const Tweets = (props) => {
   const getTweets = async (user = props.author) => {
     let data = [];
     let querySnapshot;
+    let tweetsQuery;
+
+    // tweets from specific user on their profile
     if (user) {
-      const tweetsQuery = query(
+      tweetsQuery = query(
         collection(db, 'tweets'),
         where('username', '==', user),
         orderBy('date', 'desc')
       );
-      querySnapshot = await getDocs(tweetsQuery);
+
+      // the following tab
     } else if (props.feed === 'Following') {
-      if (!props.loggedUser) return setTweets([]);
-      const ids = props.loggedUser.following.map((user) => user.id);
-      if (ids.length < 1) return setTweets('');
-      const tweetsQuery = query(
+      const users =
+        props.loggedUser && props.loggedUser.following.map((user) => user.id);
+      if (!props.loggedUser || users.length < 1) return setTweets([]);
+      tweetsQuery = query(
         collection(db, 'tweets'),
-        where('username', 'in', ids),
+        where('username', 'in', users),
         orderBy('date', 'desc')
       );
-      querySnapshot = await getDocs(tweetsQuery);
+
+      // the home feed, tweets from all users
     } else {
-      const tweetsQuery = query(
-        collection(db, 'tweets'),
-        orderBy('date', 'desc')
-      );
-      querySnapshot = await getDocs(tweetsQuery);
+      tweetsQuery = query(collection(db, 'tweets'), orderBy('date', 'desc'));
     }
+
+    querySnapshot = await getDocs(tweetsQuery);
     querySnapshot.forEach((doc) => {
       data.push({ ...doc.data(), id: doc.id });
     });
