@@ -15,12 +15,12 @@ body {
   display: block;
 }
 
+a {
+  color: inherit;
+}
+
 .app {
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-}
-
-a {
-  color: inherit;
 }

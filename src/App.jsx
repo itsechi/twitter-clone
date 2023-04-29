@@ -4,11 +4,14 @@ import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
 import { Profile } from './components/Profile/Profile';
 import { FollowerList } from './components/FollowerList/FollowerList';
+
+// firebase
+import { auth, db } from './helpers/firebase';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './helpers/firebase';
 import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
-import { db } from './helpers/firebase';
+
+// react
 import React from 'react';
 import {
   BrowserRouter as Router,

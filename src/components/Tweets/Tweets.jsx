@@ -1,15 +1,15 @@
 import { Tweet } from '../Tweet/Tweet';
+import { TweetInput } from '../TweetInput/TweetInput';
+import { getUser } from '../../helpers/getUser';
 import React from 'react';
 import { db } from '../../helpers/firebase';
 import {
   collection,
   getDocs,
-  getDoc,
   query,
   where,
   orderBy,
 } from 'firebase/firestore';
-import { TweetInput } from '../TweetInput/TweetInput';
 
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
@@ -52,15 +52,6 @@ export const Tweets = (props) => {
     );
     setTweets(data);
     props.setTweets && props.setTweets(data.length);
-  };
-
-  const getUser = async (ref) => {
-    const docRef = ref;
-    const docSnap = await getDoc(docRef);
-    let user;
-
-    if (docSnap.exists()) user = docSnap.data();
-    return user;
   };
 
   React.useEffect(() => {

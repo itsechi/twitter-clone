@@ -2,9 +2,12 @@ import styles from './Profile.module.scss';
 import icons from '../../assets/icons.svg';
 import { Nav } from '../Nav/Nav';
 import { Tweets } from '../Tweets/Tweets';
+
+// react
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useParams, Link } from 'react-router-dom';
+
+// firebase
 import { db } from '../../helpers/firebase';
 import {
   doc,
@@ -12,8 +15,11 @@ import {
   arrayUnion,
   arrayRemove,
   onSnapshot,
+  collection,
+  getDocs,
+  query,
+  where,
 } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
 
 export const Profile = (props) => {
   const routeParams = useParams();

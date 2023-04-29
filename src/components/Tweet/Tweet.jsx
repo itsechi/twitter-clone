@@ -13,32 +13,32 @@ import {
 import { db } from '../../helpers/firebase';
 
 export const Tweet = (props) => {
+  const { data } = props;
   const [liked, setLiked] = React.useState(false);
   const [amountOfLikes, setAmountOfLikes] = React.useState();
-  const { data } = props;
   const date = new Date(data.date.seconds * 1000);
   const formattedDate = format(date, 'MMM d');
 
   const updateLikes = async () => {
     if (!props.loggedUser) return;
-    setLiked(!liked);
     try {
       await updateDoc(doc(db, 'tweets', data.id), {
         likes: liked
           ? arrayRemove(doc(db, `/profiles/${props.loggedUser.username}`))
           : arrayUnion(doc(db, `/profiles/${props.loggedUser.username}`)),
       });
+      setLiked(!liked);
       onSnapshot(doc(db, 'tweets', data.id), (doc) => {
         setAmountOfLikes(doc.data().likes.length);
       });
     } catch (error) {
-      console.error('Error saving user data fo Firebase Database', error);
+      console.error('Error updating likes in Firebase Database', error);
     }
   };
 
   React.useEffect(() => {
     props.loggedUser &&
-      data.likes.some((item) => item.id === props.loggedUser.username) &&
+      data.likes.some((user) => user.id === props.loggedUser.username) &&
       setLiked(true);
     setAmountOfLikes(data.likes.length);
   }, [data]);

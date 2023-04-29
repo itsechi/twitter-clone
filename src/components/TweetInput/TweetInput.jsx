@@ -1,7 +1,7 @@
 import styles from './TweetInput.module.scss';
+import React from 'react';
 import { addDoc, collection, serverTimestamp, doc } from 'firebase/firestore';
 import { db } from '../../helpers/firebase';
-import React from 'react';
 
 export const TweetInput = (props) => {
   const [tweet, setTweet] = React.useState('');

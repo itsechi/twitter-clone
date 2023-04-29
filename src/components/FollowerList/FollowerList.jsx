@@ -1,8 +1,13 @@
-import { Nav } from '../Nav/Nav';
-import React from 'react';
 import styles from './FollowerList.module.scss';
+import { Nav } from '../Nav/Nav';
+import { getUser } from '../../helpers/getUser';
+
+// firebase
 import { db } from '../../helpers/firebase';
-import { query, collection, where, getDocs, getDoc } from 'firebase/firestore';
+import { query, collection, where, getDocs } from 'firebase/firestore';
+
+// react
+import React from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 
 export const FollowerList = () => {
@@ -42,15 +47,6 @@ export const FollowerList = () => {
     );
     setFollowing(following);
     setFollowers(followers);
-  };
-
-  const getUser = async (ref) => {
-    const docRef = ref;
-    const docSnap = await getDoc(docRef);
-    let user;
-
-    if (docSnap.exists()) user = docSnap.data();
-    return user;
   };
 
   const followingSection =
