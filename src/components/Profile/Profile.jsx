@@ -1,14 +1,14 @@
 import styles from './Profile.module.scss';
-import icons from '../../assets/icons.svg';
 import { Nav } from '../Nav/Nav';
 import { Tweets } from '../Tweets/Tweets';
-import { getUserFromQuery } from '../../helpers/getUserFromQuery';
+import { GoBackBar } from '../GoBackBar/GoBackBar';
 
 // react
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 // firebase
+import { getUserFromQuery } from '../../helpers/getUserFromQuery';
 import { db } from '../../helpers/firebase';
 import {
   doc,
@@ -86,17 +86,7 @@ export const Profile = (props) => {
     <main className="main">
       {user && (
         <>
-          <div className={styles.header}>
-            <div className={styles.headerIcon}>
-              <svg>
-                <use href={`${icons}#back`}></use>
-              </svg>
-            </div>
-            <div className={styles.headerText}>
-              <h2 className={[styles.headerTextLarge, "textLarge"].join(' ')}>{user.displayName}</h2>
-              <p>{numberOfTweets}</p>
-            </div>
-          </div>
+          <GoBackBar displayName={user.displayName} info={numberOfTweets} />
 
           <div className={styles.images}>
             <img
@@ -118,7 +108,7 @@ export const Profile = (props) => {
                     className={[
                       followed ? styles.unfollowBtn : styles.followBtn,
                       styles.btn,
-                      "btn"
+                      'btn',
                     ].join(' ')}
                     onClick={updateFollowing}
                     onMouseOver={() => followed && setButtonText('Unfollow')}
@@ -131,7 +121,9 @@ export const Profile = (props) => {
 
             <h2 className="textLarge">{user.displayName}</h2>
             <p className="textGray">@{user.username}</p>
-            <p className={[styles.description, "textRegular"].join(' ')}>{user.description}</p>
+            <p className={[styles.description, 'textRegular'].join(' ')}>
+              {user.description}
+            </p>
 
             <div className={styles.followerCount}>
               <Link to={`./following`}>
@@ -142,8 +134,7 @@ export const Profile = (props) => {
               </Link>
               <Link to={`./followers`}>
                 <p>
-                  <span className="textBold">{followerAmount}</span>{' '}
-                  Followers
+                  <span className="textBold">{followerAmount}</span> Followers
                 </p>
               </Link>
             </div>

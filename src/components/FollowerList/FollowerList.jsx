@@ -1,4 +1,5 @@
 import { Nav } from '../Nav/Nav';
+import { GoBackBar } from '../GoBackBar/GoBackBar';
 import { getUserFromRef } from '../../helpers/getUserFromRef';
 import { getUserFromQuery } from '../../helpers/getUserFromQuery';
 import { followerSection } from './FollowerSection';
@@ -11,6 +12,7 @@ export const FollowerList = () => {
   const [feed, setFeed] = React.useState('');
   const [following, setFollowing] = React.useState();
   const [followers, setFollowers] = React.useState();
+  const [user, setUser] = React.useState();
   const routeParams = useParams();
   const location = useLocation();
 
@@ -24,6 +26,7 @@ export const FollowerList = () => {
   const getFollowerList = async (username) => {
     const user = await getUserFromQuery(username);
     if (!user) return;
+    setUser(user.data());
     let following = [];
     let followers = [];
     await Promise.all(
@@ -45,6 +48,9 @@ export const FollowerList = () => {
 
   return (
     <main className="main">
+      {user && (
+        <GoBackBar displayName={user.displayName} info={`@${user.username}`} />
+      )}
       <Nav
         feed={feed}
         setFeed={setFeed}

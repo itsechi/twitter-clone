@@ -8,7 +8,7 @@ export const Home = (props) => {
 
   return (
     <main className="main">
-      <div className={styles.header}>
+      <div className="header">
         <h2 className={styles.title}>Home</h2>
         <Nav feed={feed} setFeed={setFeed} ids={['For you', 'Following']} />
       </div>
