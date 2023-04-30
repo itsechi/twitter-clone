@@ -53,7 +53,7 @@ export const Tweets = (props) => {
 
   React.useEffect(() => {
     getTweets();
-  }, [props.author, props.feed]);
+  }, [props.author, props.feed, props.loggedUser]);
 
   const displayTweets =
     tweets &&

@@ -38,8 +38,8 @@ export const Tweet = (props) => {
 
   React.useEffect(() => {
     props.loggedUser &&
-      data.likes.some((user) => user.id === props.loggedUser.username) &&
-      setLiked(true);
+      data.likes.some((user) => user.id === props.loggedUser.username) ?
+      setLiked(true) : setLiked(false);
     setAmountOfLikes(data.likes.length);
   }, [data]);
 
