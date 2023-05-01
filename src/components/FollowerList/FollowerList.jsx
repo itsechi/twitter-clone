@@ -49,7 +49,11 @@ export const FollowerList = () => {
   return (
     <main className="main">
       {user && (
-        <GoBackBar displayName={user.displayName} info={`@${user.username}`} />
+        <GoBackBar
+          displayName={user.displayName}
+          info={`@${user.username}`}
+          link={`/${user.username}`}
+        />
       )}
       <Nav
         feed={feed}

@@ -1,14 +1,15 @@
 import styles from './GoBackBar.module.scss';
 import icons from '../../assets/icons.svg';
+import { Link } from 'react-router-dom';
 
 export const GoBackBar = (props) => {
   return (
     <div className={[styles.header, "header"].join(' ')}>
-      <div className={styles.headerIcon}>
+      <Link to={props.link} className={styles.headerIcon}>
         <svg>
           <use href={`${icons}#back`}></use>
         </svg>
-      </div>
+      </Link>
       <div className={styles.headerText}>
         <h2 className={[styles.headerTextLarge, 'textLarge'].join(' ')}>
           {props.displayName}

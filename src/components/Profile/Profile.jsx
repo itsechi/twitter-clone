@@ -86,7 +86,7 @@ export const Profile = (props) => {
     <main className="main">
       {user && (
         <>
-          <GoBackBar displayName={user.displayName} info={numberOfTweets} />
+          <GoBackBar displayName={user.displayName} info={numberOfTweets} link={'/home'} />
 
           <div className={styles.images}>
             <img
