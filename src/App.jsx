@@ -90,6 +90,18 @@ function App() {
             element={<Profile loggedUser={loggedUser} openModal={openModal} />}
           />
           <Route
+            path="/:id/replies"
+            element={<Profile loggedUser={loggedUser} openModal={openModal} />}
+          />
+          <Route
+            path="/:id/media"
+            element={<Profile loggedUser={loggedUser} openModal={openModal} />}
+          />
+          <Route
+            path="/:id/likes"
+            element={<Profile loggedUser={loggedUser} openModal={openModal} />}
+          />
+          <Route
             path="/:id/following"
             element={<FollowerList loggedUser={loggedUser} />}
           />

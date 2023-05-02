@@ -5,7 +5,7 @@ import { GoBackBar } from '../GoBackBar/GoBackBar';
 
 // react
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 
 // firebase
 import { getUserFromQuery } from '../../helpers/getUserFromQuery';
@@ -26,10 +26,17 @@ export const Profile = (props) => {
   const [followerAmount, setFollowerAmount] = React.useState();
   const [followed, setFollowed] = React.useState(false);
   const [buttonText, setButtonText] = React.useState('');
+  const location = useLocation();
 
   React.useEffect(() => {
     getUser(routeParams.id);
-  }, [routeParams.id, props.loggedUser]);
+    const pathname = location.pathname.split('/')[2];
+    if (!pathname) return setFeed('Tweets');
+    const firstLetter = pathname.charAt(0).toUpperCase();
+    const remainingLetters = pathname.slice(1);
+    const feedName = firstLetter + remainingLetters;
+    setFeed(feedName);
+  }, [routeParams.id, props.loggedUser, feed]);
 
   const getUser = async (username) => {
     const user = await getUserFromQuery(username);
@@ -86,7 +93,11 @@ export const Profile = (props) => {
     <main className="main">
       {user && (
         <>
-          <GoBackBar displayName={user.displayName} info={numberOfTweets} link={'/home'} />
+          <GoBackBar
+            displayName={user.displayName}
+            info={numberOfTweets}
+            link={'/home'}
+          />
 
           <div className={styles.images}>
             <img
@@ -126,13 +137,13 @@ export const Profile = (props) => {
             </p>
 
             <div className={styles.followerCount}>
-              <Link to={`./following`}>
+              <Link to={`/${user.username}/following`}>
                 <p className={styles.countText}>
                   <span className="textBold">{user.following.length}</span>{' '}
                   Following
                 </p>
               </Link>
-              <Link to={`./followers`}>
+              <Link to={`/${user.username}/followers`}>
                 <p>
                   <span className="textBold">{followerAmount}</span> Followers
                 </p>
@@ -144,9 +155,16 @@ export const Profile = (props) => {
             feed={feed}
             setFeed={setFeed}
             ids={['Tweets', 'Replies', 'Media', 'Likes']}
+            links={[
+              `/${routeParams.id}`,
+              `/${routeParams.id}/replies`,
+              `/${routeParams.id}/media`,
+              `/${routeParams.id}/likes`,
+            ]}
           />
 
           <Tweets
+            feed={feed}
             openModal={props.openModal}
             author={user.username}
             loggedUser={props.loggedUser}

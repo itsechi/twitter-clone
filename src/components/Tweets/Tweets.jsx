@@ -4,6 +4,7 @@ import { getUserFromRef } from '../../helpers/getUserFromRef';
 import React from 'react';
 import { db } from '../../helpers/firebase';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import styles from './Tweets.module.scss';
 
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
@@ -15,12 +16,13 @@ export const Tweets = (props) => {
 
     // tweets from specific user on their profile
     if (user) {
-      tweetsQuery = query(
-        collection(db, 'tweets'),
-        where('username', '==', user),
-        orderBy('date', 'desc')
-      );
-
+      if (props.feed === 'Tweets') {
+        tweetsQuery = query(
+          collection(db, 'tweets'),
+          where('username', '==', user),
+          orderBy('date', 'desc')
+        );
+      } else return setTweets([]);
       // the following tab
     } else if (props.feed === 'Following') {
       const users =
@@ -31,7 +33,6 @@ export const Tweets = (props) => {
         where('username', 'in', users),
         orderBy('date', 'desc')
       );
-
       // the home feed, tweets from all users
     } else {
       tweetsQuery = query(collection(db, 'tweets'), orderBy('date', 'desc'));
@@ -73,7 +74,24 @@ export const Tweets = (props) => {
       {props.loggedUser && !props.author && (
         <TweetInput getTweets={getTweets} loggedUser={props.loggedUser} />
       )}
-      <section>{displayTweets}</section>
+      {tweets && tweets.length > 0 ? (
+        <section>{displayTweets}</section>
+      ) : (
+        <section className={styles.tweets}>
+          <div className={styles.noTweets}>
+            <p className={styles.textLarge}>
+              {props.feed === 'Following' || props.feed === 'For you'
+                ? 'No tweets to show!'
+                : 'Not implemented yet!'}
+            </p>
+            <p className="textGray">
+              {props.feed === 'Following' || props.feed === 'For you'
+                ? `Tweets will appear here after they've been tweeted.`
+                : `The code for this feature hasn't been written yet.`}
+            </p>
+          </div>
+        </section>
+      )}
     </>
   );
 };
