@@ -6,6 +6,10 @@ import { Tweets } from '../Tweets/Tweets';
 export const Home = (props) => {
   const [feed, setFeed] = React.useState('For you');
 
+  React.useEffect(() => {
+    document.title = 'Home / Twitter Clone';
+  });
+
   return (
     <main className="main">
       <div className="header">

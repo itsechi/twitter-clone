@@ -21,12 +21,15 @@ export const FollowerList = () => {
     location.pathname.includes('following')
       ? setFeed('Following')
       : setFeed('Followers');
-  }, []);
+  }, [feed]);
 
   const getFollowerList = async (username) => {
     const user = await getUserFromQuery(username);
     if (!user) return;
     setUser(user.data());
+    document.title = `People ${
+      feed === 'Following' ? 'followed by' : 'following'
+    } ${user.data().displayName} (@${user.data().username}) / Twitter Clone`;
     let following = [];
     let followers = [];
     await Promise.all(

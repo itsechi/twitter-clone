@@ -43,6 +43,9 @@ export const Profile = (props) => {
     if (!user) return;
     setUser(user.data());
     setFollowerAmount(user.data().followers.length);
+    document.title = `${user.data().displayName} (@${
+      user.data().username
+    }) / Twitter Clone`;
 
     // update the button
     const followStatus = user
