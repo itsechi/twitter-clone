@@ -13,6 +13,8 @@
   flex-direction: column;
 }
 
+// rgb(251, 159, 168); red highlight
+
 .input {
   padding: 12px 0;
   border: none;
@@ -20,14 +22,52 @@
   background-color: none;
   font-family: inherit;
   font-size: 20px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  max-height: 720px;
+  min-height: 24px;
+  resize: none;
+  overflow: hidden;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.progressCircle {
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.tweetLength {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.length {
+  position: absolute;
+  font-size: 13px;
+}
+
+.lengthGray {
+  color: $gray;
+}
+
+.lengthRed {
+  color: rgb(245, 31, 45);
 }
 
 .btn {
-  margin-left: auto;
   outline: none;
   border: none;
   background-color: $blue;
   color: white;
+  margin-left: 18px;
 
   &:hover:not(:disabled) {
     background-color: rgb(26, 140, 216);
