@@ -11,7 +11,6 @@ export const Tweets = (props) => {
 
   const getTweets = async (user = props.author) => {
     let data = [];
-    let querySnapshot;
     let tweetsQuery;
 
     // tweets from specific user on their profile
@@ -38,7 +37,7 @@ export const Tweets = (props) => {
       tweetsQuery = query(collection(db, 'tweets'), orderBy('date', 'desc'));
     }
 
-    querySnapshot = await getDocs(tweetsQuery);
+    const querySnapshot = await getDocs(tweetsQuery);
     querySnapshot.forEach((doc) => {
       data.push({ ...doc.data(), id: doc.id });
     });
@@ -80,7 +79,9 @@ export const Tweets = (props) => {
         <section className={styles.tweets}>
           <div className={styles.noTweets}>
             <p className={styles.textLarge}>
-              {props.feed === 'Following' || props.feed === 'For you'
+              {props.feed === 'Following' ||
+              props.feed === 'For you' ||
+              props.feed === 'Tweets'
                 ? 'No tweets to show!'
                 : 'Not implemented yet!'}
             </p>

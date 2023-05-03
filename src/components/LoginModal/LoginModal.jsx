@@ -28,6 +28,9 @@ export const LoginModal = (props) => {
         <a href="#" className={[styles.btn, "btn"].join(' ')} onClick={props.signInWithGoogle}>
           Log in
         </a>
+        <a href="#" className={[styles.btn, "btn"].join(' ')} onClick={props.joinAsGuest}>
+          Join as guest
+        </a>
       </div>
     </div>
   );

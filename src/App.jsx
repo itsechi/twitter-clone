@@ -7,7 +7,12 @@ import { FollowerList } from './components/FollowerList/FollowerList';
 
 // firebase
 import { auth, db } from './helpers/firebase';
-import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInAnonymously,
+  signOut,
+} from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
 
@@ -38,13 +43,24 @@ function App() {
 
   const checkUser = async (user) => {
     if (!user) return;
-    const userData = {
-      username: user.email.split('@')[0],
-      displayName: user.displayName,
-      profilePicture: user.photoURL,
-      followers: [],
-      following: [],
-    };
+    let userData;
+    if (user.isAnonymous) {
+      userData = {
+        username: 'guest',
+        displayName: 'Guest',
+        profilePicture: '',
+        followers: [],
+        following: [],
+      };
+    } else {
+      userData = {
+        username: user.email.split('@')[0],
+        displayName: user.displayName,
+        profilePicture: user.photoURL,
+        followers: [],
+        following: [],
+      };
+    }
     const docRef = doc(db, 'profiles', userData.username);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -72,11 +88,19 @@ function App() {
     setLoggedUser('');
   };
 
+  const joinAsGuest = () => {
+    signInAnonymously(auth);
+  };
+
   return (
     <div className="app">
       <Router>
         {modal && (
-          <LoginModal signInWithGoogle={signInWithGoogle} setModal={setModal} />
+          <LoginModal
+            signInWithGoogle={signInWithGoogle}
+            setModal={setModal}
+            joinAsGuest={joinAsGuest}
+          />
         )}
         <Header signOut={signOutUser} loggedUser={loggedUser} />
         <Routes>
@@ -111,7 +135,7 @@ function App() {
           />
         </Routes>
 
-        {!user && <BottomBar signInWithGoogle={signInWithGoogle} />}
+        {!user && <BottomBar openModal={openModal} />}
       </Router>
     </div>
   );
