@@ -1,9 +1,9 @@
-import { Home } from './components/Home/Home';
+import { Home } from './pages/Home/Home';
+import { Profile } from './pages/Profile/Profile';
+import { FollowerList } from './pages/FollowerList/FollowerList';
 import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
-import { Profile } from './components/Profile/Profile';
-import { FollowerList } from './components/FollowerList/FollowerList';
 
 // firebase
 import { auth, db } from './helpers/firebase';

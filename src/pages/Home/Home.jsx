@@ -1,7 +1,7 @@
 import styles from './Home.module.scss';
 import React from 'react';
-import { Nav } from '../Nav/Nav';
-import { Tweets } from '../Tweets/Tweets';
+import { Nav } from '../../components/Nav/Nav';
+import { Tweets } from '../../components/Tweets/Tweets';
 
 export const Home = (props) => {
   const [feed, setFeed] = React.useState('For you');

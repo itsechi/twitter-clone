@@ -1,5 +1,5 @@
-import { Nav } from '../Nav/Nav';
-import { GoBackBar } from '../GoBackBar/GoBackBar';
+import { Nav } from '../../components/Nav/Nav';
+import { GoBackBar } from '../../components/GoBackBar/GoBackBar';
 import { getUserFromRef } from '../../helpers/getUserFromRef';
 import { getUserFromQuery } from '../../helpers/getUserFromQuery';
 import { followerSection } from './FollowerSection';

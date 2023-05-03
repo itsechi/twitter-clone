@@ -1,7 +1,7 @@
 import styles from './Profile.module.scss';
-import { Nav } from '../Nav/Nav';
-import { Tweets } from '../Tweets/Tweets';
-import { GoBackBar } from '../GoBackBar/GoBackBar';
+import { Nav } from '../../components/Nav/Nav';
+import { Tweets } from '../../components/Tweets/Tweets';
+import { GoBackBar } from '../../components/GoBackBar/GoBackBar';
 
 // react
 import React from 'react';
