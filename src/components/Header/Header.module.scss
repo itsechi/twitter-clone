@@ -1,4 +1,4 @@
-@import '../../variables'; 
+@import '../../variables';
 
 .header {
   width: 275px;
@@ -12,7 +12,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   position: fixed;
+  height: 100%;
+  padding: 12px;
 }
 
 .logoLink {
@@ -51,4 +54,26 @@
 .headerText {
   margin-left: 16px;
   margin-right: 8px;
+}
+
+.profilePic {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.account {
+  display: flex;
+}
+
+.accountInfo {
+  font-size: 15px;
+  line-height: 20px;
+  display: block;
+  max-width: 100px;
+  
+  & p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:nowrap;
+  }
 }
