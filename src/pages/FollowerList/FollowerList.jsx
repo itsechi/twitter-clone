@@ -30,20 +30,25 @@ export const FollowerList = () => {
     document.title = `People ${
       feed === 'Following' ? 'followed by' : 'following'
     } ${user.data().displayName} (@${user.data().username}) / Twitter Clone`;
-    let following = [];
-    let followers = [];
-    await Promise.all(
-      user.data().following.map(async (data) => {
-        let user = await getUserFromRef(data);
-        following.push(user);
-      }),
-      user.data().followers.map(async (data) => {
-        let user = await getUserFromRef(data);
-        followers.push(user);
-      })
-    );
-    setFollowing(following);
-    setFollowers(followers);
+    if (feed === 'Following') {
+      let following = [];
+      await Promise.all(
+        user.data().following.map(async (data) => {
+          let user = await getUserFromRef(data);
+          following.push(user);
+        })
+      );
+      setFollowing(following);
+    } else {
+      let followers = [];
+      await Promise.all(
+        user.data().followers.map(async (data) => {
+          let user = await getUserFromRef(data);
+          followers.push(user);
+        })
+      );
+      setFollowers(followers);
+    }
   };
 
   const followingSection = following && followerSection(following);
