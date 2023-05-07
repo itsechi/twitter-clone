@@ -43,9 +43,11 @@ function App() {
 
   const checkUser = async (user) => {
     if (!user) return;
+    console.log(user.uid)
     let userData;
     if (user.isAnonymous) {
       userData = {
+        uid: 'guest',
         username: 'guest',
         displayName: 'Guest',
         profilePicture: '',
@@ -54,6 +56,7 @@ function App() {
       };
     } else {
       userData = {
+        uid: user.uid,
         username: user.email.split('@')[0],
         displayName: user.displayName,
         profilePicture: user.photoURL,

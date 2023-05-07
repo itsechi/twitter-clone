@@ -119,7 +119,7 @@ export const Profile = (props) => {
           <div className={styles.info}>
             <div className={styles.followBar}>
               {props.loggedUser &&
-                props.loggedUser.username !== routeParams.id ? (
+                (props.loggedUser.username !== routeParams.id ? (
                   <button
                     className={[
                       followed ? styles.unfollowBtn : styles.followBtn,
@@ -132,7 +132,16 @@ export const Profile = (props) => {
                   >
                     {buttonText}
                   </button>
-                ) : <button onClick={() => setEditModal(true)} className={[styles.btn, "btn", styles.unfollowBtn].join(' ')}>Edit profile</button>}
+                ) : (
+                  <button
+                    onClick={() => setEditModal(true)}
+                    className={[styles.btn, 'btn', styles.unfollowBtn].join(
+                      ' '
+                    )}
+                  >
+                    Edit profile
+                  </button>
+                ))}
             </div>
 
             <h2 className="textLarge">{user.displayName}</h2>
@@ -177,7 +186,12 @@ export const Profile = (props) => {
           />
         </>
       )}
-      {editModal && <EditProfile setEditModal={setEditModal} loggedUser={props.loggedUser} />}
+      {editModal && props.loggedUser && (
+        <EditProfile
+          setEditModal={setEditModal}
+          loggedUser={props.loggedUser}
+        />
+      )}
     </main>
   );
 };
