@@ -14,7 +14,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot } from 'firebase/firestore';
 
 // react
 import React from 'react';
@@ -24,6 +24,10 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getUserFromRef } from './helpers/getUserFromRef';
+
+const storage = getStorage();
 
 function App() {
   const [user] = useAuthState(auth);
@@ -43,14 +47,12 @@ function App() {
 
   const checkUser = async (user) => {
     if (!user) return;
-    console.log(user.uid)
     let userData;
     if (user.isAnonymous) {
       userData = {
         uid: 'guest',
         username: 'guest',
         displayName: 'Guest',
-        profilePicture: '',
         followers: [],
         following: [],
       };
@@ -59,14 +61,14 @@ function App() {
         uid: user.uid,
         username: user.email.split('@')[0],
         displayName: user.displayName,
-        profilePicture: user.photoURL,
         followers: [],
         following: [],
       };
     }
     const docRef = doc(db, 'profiles', userData.username);
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
+    const userInfo = await getUserFromRef(docRef);
+    if (!userInfo) {
+      uploadProfilePicture(user.photoURL, userData.username);
       try {
         await setDoc(docRef, {
           ...userData,
@@ -75,10 +77,20 @@ function App() {
         console.error('Error saving user data fo Firebase Database', error);
       }
     }
-    setLoggedUser(userData);
-    onSnapshot(docRef, (doc) => {
-      setLoggedUser(doc.data());
+    setLoggedUser(userInfo);
+    onSnapshot(docRef, async () => {
+      const userInfo = await getUserFromRef(docRef);
+      setLoggedUser(userInfo);
     });
+  };
+
+  const uploadProfilePicture = (url, username) => {
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const storageRef = ref(storage, `${username}.jpg`);
+        uploadBytes(storageRef, blob);
+      });
   };
 
   const signInWithGoogle = () => {

@@ -43,18 +43,14 @@ export const Profile = (props) => {
   const getUser = async (username) => {
     const user = await getUserFromQuery(username);
     if (!user) return;
-    setUser(user.data());
-    setFollowerAmount(user.data().followers.length);
-    document.title = `${user.data().displayName} (@${
-      user.data().username
-    }) / Twitter Clone`;
+    setUser(user);
+    setFollowerAmount(user.followers.length);
+    document.title = `${user.displayName} (@${user.username}) / Twitter Clone`;
 
     // update the button
-    const followStatus = user
-      .data()
-      .followers.some(
-        (user) => props.loggedUser && user.id === props.loggedUser.username
-      );
+    const followStatus = user.followers.some(
+      (user) => props.loggedUser && user.id === props.loggedUser.username
+    );
     setFollowed(followStatus);
     !followStatus ? setButtonText('Follow') : setButtonText('Following');
   };
@@ -74,6 +70,7 @@ export const Profile = (props) => {
           : arrayUnion(doc(db, `/profiles/${routeParams.id}`)),
       });
       onSnapshot(doc(db, 'profiles', routeParams.id), (doc) => {
+        console.log(doc);
         setFollowerAmount(doc.data().followers.length);
       });
 

@@ -26,14 +26,14 @@ export const FollowerList = () => {
   const getFollowerList = async (username) => {
     const user = await getUserFromQuery(username);
     if (!user) return;
-    setUser(user.data());
+    setUser(user);
     document.title = `People ${
       feed === 'Following' ? 'followed by' : 'following'
-    } ${user.data().displayName} (@${user.data().username}) / Twitter Clone`;
+    } ${user.displayName} (@${user.username}) / Twitter Clone`;
     if (feed === 'Following') {
       let following = [];
       await Promise.all(
-        user.data().following.map(async (data) => {
+        user.following.map(async (data) => {
           let user = await getUserFromRef(data);
           following.push(user);
         })
@@ -42,7 +42,7 @@ export const FollowerList = () => {
     } else {
       let followers = [];
       await Promise.all(
-        user.data().followers.map(async (data) => {
+        user.followers.map(async (data) => {
           let user = await getUserFromRef(data);
           followers.push(user);
         })

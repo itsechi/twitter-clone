@@ -25,10 +25,18 @@ export const LoginModal = (props) => {
           <p>People on Twitter are the first to know.</p>
         </div>
 
-        <a href="#" className={[styles.btn, "btn"].join(' ')} onClick={props.signInWithGoogle}>
+        <a
+          href="#"
+          className={[styles.btn, 'btn'].join(' ')}
+          onClick={props.signInWithGoogle}
+        >
           Log in
         </a>
-        <a href="#" className={[styles.btn, "btn"].join(' ')} onClick={props.joinAsGuest}>
+        <a
+          href="#"
+          className={[styles.btn, 'btn'].join(' ')}
+          onClick={props.joinAsGuest}
+        >
           Join as guest
         </a>
       </div>
