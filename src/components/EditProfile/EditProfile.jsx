@@ -2,15 +2,12 @@ import styles from './EditProfile.module.scss';
 import icons from '../../assets/icons.svg';
 import { InputWrap } from './InputWrap';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../helpers/firebase';
+import { db, storage } from '../../helpers/firebase';
 import React from 'react';
-import Cropper from 'react-easy-crop';
 import AvatarEditor from 'react-avatar-editor';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export const EditProfile = (props) => {
-  const storage = getStorage();
-
   const [displayName, setDisplayName] = React.useState(
     props.loggedUser.displayName || ''
   );
@@ -58,9 +55,7 @@ export const EditProfile = (props) => {
     canvasScaled.toBlob((blob) => {
       setProfilePicture(blob);
       const storageRef = ref(storage, `${props.loggedUser.username}.jpg`);
-      uploadBytes(storageRef, blob).then(() => {
-        console.log('Uploaded a blob or file!');
-      });
+      uploadBytes(storageRef, blob);
       getPic();
     });
 

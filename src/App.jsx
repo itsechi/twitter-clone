@@ -4,17 +4,18 @@ import { FollowerList } from './pages/FollowerList/FollowerList';
 import { Header } from './components/Header/Header';
 import { BottomBar } from './components/BottomBar/BottomBar';
 import { LoginModal } from './components/LoginModal/LoginModal';
+import { getUserFromRef } from './helpers/getUserFromRef';
 
 // firebase
-import { auth, db } from './helpers/firebase';
+import { auth, db, storage } from './helpers/firebase';
 import {
   signInWithPopup,
   GoogleAuthProvider,
   signInAnonymously,
   signOut,
 } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { ref, uploadBytes } from 'firebase/storage';
 
 // react
 import React from 'react';
@@ -24,10 +25,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { getUserFromRef } from './helpers/getUserFromRef';
-
-const storage = getStorage();
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function App() {
   const [user] = useAuthState(auth);
@@ -66,8 +64,8 @@ function App() {
       };
     }
     const docRef = doc(db, 'profiles', userData.username);
-    const userInfo = await getUserFromRef(docRef);
-    if (!userInfo) {
+    const userObject = await getUserFromRef(docRef);
+    if (!userObject) {
       uploadProfilePicture(user.photoURL, userData.username);
       try {
         await setDoc(docRef, {
@@ -77,10 +75,10 @@ function App() {
         console.error('Error saving user data fo Firebase Database', error);
       }
     }
-    setLoggedUser(userInfo);
+    setLoggedUser(userObject);
     onSnapshot(docRef, async () => {
-      const userInfo = await getUserFromRef(docRef);
-      setLoggedUser(userInfo);
+      const userObject = await getUserFromRef(docRef);
+      setLoggedUser(userObject);
     });
   };
 

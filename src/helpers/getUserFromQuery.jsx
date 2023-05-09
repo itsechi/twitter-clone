@@ -1,10 +1,8 @@
-import { db } from './firebase';
+import { db, storage } from './firebase';
 import { query, collection, where, getDocs } from 'firebase/firestore';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 export const getUserFromQuery = async (username) => {
-  const storage = getStorage();
-
   const userQuery = query(
     collection(db, 'profiles'),
     where('username', '==', username)
