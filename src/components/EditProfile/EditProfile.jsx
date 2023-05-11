@@ -1,10 +1,12 @@
+import { InputWrap } from './InputWrap';
 import styles from './EditProfile.module.scss';
 import icons from '../../assets/icons.svg';
-import { InputWrap } from './InputWrap';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db, storage } from '../../helpers/firebase';
 import React from 'react';
 import AvatarEditor from 'react-avatar-editor';
+
+// firebase
+import { db, storage } from '../../helpers/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export const EditProfile = (props) => {
@@ -15,16 +17,16 @@ export const EditProfile = (props) => {
     props.loggedUser.description || ''
   );
   const [profilePicture, setProfilePicture] = React.useState(
-    props.loggedUser.profilePic || ''
+    props.loggedUser.profilePicture || ''
   );
-
-  const editor = React.useRef(null);
-  const [picture, setPicture] = React.useState({
+  const [croppedPicture, setCroppedPicture] = React.useState({
     cropperOpen: false,
-    img: null,
+    originalImg: null,
     zoom: 2,
     croppedImg: '',
   });
+
+  const editor = React.useRef(null);
 
   const updateProfile = async () => {
     try {
@@ -36,14 +38,15 @@ export const EditProfile = (props) => {
     } catch (error) {
       console.error('Error updating profile in Firebase Database', error);
     }
+    props.setUpdated(true);
   };
 
   const handleFileChange = (e) => {
     let url = URL.createObjectURL(e.target.files[0]);
 
-    setPicture({
-      ...picture,
-      img: url,
+    setCroppedPicture({
+      ...croppedPicture,
+      originalImg: url,
       cropperOpen: true,
     });
   };
@@ -53,25 +56,25 @@ export const EditProfile = (props) => {
     const croppedImg = canvasScaled.toDataURL();
 
     canvasScaled.toBlob((blob) => {
-      setProfilePicture(blob);
       const storageRef = ref(storage, `${props.loggedUser.username}.jpg`);
       uploadBytes(storageRef, blob);
-      getPic();
     });
 
-    setPicture({
-      ...picture,
-      img: null,
+    setCroppedPicture({
+      ...croppedPicture,
+      originalImg: null,
       cropperOpen: false,
       croppedImg: croppedImg,
     });
+
+    getProfilePicture();
   };
 
-  const getPic = () => {
+  const getProfilePicture = () => {
     const storageRef = ref(storage, `${props.loggedUser.username}.jpg`);
     getDownloadURL(storageRef)
       .then((url) => {
-        console.log(url);
+        setProfilePicture(url);
       })
       .catch((error) => {
         console.error(error);
@@ -97,43 +100,88 @@ export const EditProfile = (props) => {
           </div>
 
           <h2 className={styles.headerTitle}>Edit profile</h2>
-          <button
-            onClick={updateProfile}
-            className={['btn', styles.btn].join(' ')}
-          >
-            Save
-          </button>
+          {!croppedPicture.cropperOpen ? (
+            <button
+              onClick={updateProfile}
+              className={['btn', styles.btn].join(' ')}
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              onClick={handleSave}
+              className={['btn', styles.btn].join(' ')}
+            >
+              Apply
+            </button>
+          )}
         </div>
 
-        {picture.cropperOpen && (
-          <AvatarEditor
-            image={picture.img}
-            className={styles.crop}
-            width={250}
-            height={250}
-            border={50}
-            color={[255, 255, 255, 0.6]}
-            scale={1}
-            rotate={0}
-            ref={editor}
-          />
+        {croppedPicture.cropperOpen && (
+          <div className={styles.cropper}>
+            <AvatarEditor
+              image={croppedPicture.originalImg}
+              className={styles.crop}
+              width={336}
+              height={336}
+              border={50}
+              color={[230, 236, 240, 0.7]}
+              scale={1}
+              rotate={0}
+              ref={editor}
+            />
+          </div>
         )}
-        <button onClick={handleSave}>Save</button>
-        {/* {picture.croppedImg && <img src={picture.croppedImg}></img>} */}
 
-        <div className={styles.inputs}>
-          <input type="file" onChange={handleFileChange}></input>
-          <InputWrap
-            text={'Name'}
-            input={displayName}
-            setInput={setDisplayName}
-          />
-          <InputWrap
-            text={'Bio'}
-            input={description}
-            setInput={setDescription}
-          />
-        </div>
+        {!croppedPicture.cropperOpen && (
+          <>
+            <div className={styles.images}>
+              <img
+                className={styles.banner}
+                src={
+                  props.loggedUser.bannerPicture
+                    ? props.loggedUser.bannerPicture
+                    : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
+                }
+              ></img>
+
+              <div className={styles.profilePicContainer}>
+                {croppedPicture.croppedImg ? (
+                  <img
+                    className={styles.profilePic}
+                    src={croppedPicture.croppedImg}
+                  ></img>
+                ) : (
+                  <img className={styles.profilePic} src={profilePicture}></img>
+                )}
+                <label className={styles.pictureInput}>
+                  <svg>
+                    <use href={`${icons}#pictureInput`}></use>
+                  </svg>
+                  <input
+                    className={styles.hidden}
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={handleFileChange}
+                  ></input>
+                </label>
+              </div>
+            </div>
+
+            <div className={styles.inputs}>
+              <InputWrap
+                text={'Name'}
+                input={displayName}
+                setInput={setDisplayName}
+              />
+              <InputWrap
+                text={'Bio'}
+                input={description}
+                setInput={setDescription}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

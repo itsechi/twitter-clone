@@ -48,7 +48,6 @@ function App() {
     let userData;
     if (user.isAnonymous) {
       userData = {
-        uid: 'guest',
         username: 'guest',
         displayName: 'Guest',
         followers: [],
@@ -56,7 +55,6 @@ function App() {
       };
     } else {
       userData = {
-        uid: user.uid,
         username: user.email.split('@')[0],
         displayName: user.displayName,
         followers: [],
