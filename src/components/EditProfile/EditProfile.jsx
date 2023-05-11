@@ -2,14 +2,15 @@ import { InputWrap } from './InputWrap';
 import styles from './EditProfile.module.scss';
 import icons from '../../assets/icons.svg';
 import React from 'react';
-import AvatarEditor from 'react-avatar-editor';
 
 // firebase
 import { db, storage } from '../../helpers/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ImageCropper } from './ImageCropper';
 
 export const EditProfile = (props) => {
+  const editor = React.useRef(null);
   const [displayName, setDisplayName] = React.useState(
     props.loggedUser.displayName || ''
   );
@@ -25,21 +26,6 @@ export const EditProfile = (props) => {
     zoom: 2,
     croppedImg: '',
   });
-
-  const editor = React.useRef(null);
-
-  const updateProfile = async () => {
-    try {
-      await updateDoc(doc(db, 'profiles', props.loggedUser.username), {
-        displayName: displayName,
-        description: description,
-      });
-      props.setEditModal(false);
-    } catch (error) {
-      console.error('Error updating profile in Firebase Database', error);
-    }
-    props.setUpdated(true);
-  };
 
   const handleFileChange = (e) => {
     let url = URL.createObjectURL(e.target.files[0]);
@@ -81,6 +67,19 @@ export const EditProfile = (props) => {
       });
   };
 
+  const updateProfile = async () => {
+    try {
+      await updateDoc(doc(db, 'profiles', props.loggedUser.username), {
+        displayName: displayName,
+        description: description,
+      });
+      props.setEditModal(false);
+      props.setUpdated(true);
+    } catch (error) {
+      console.error('Error updating profile in Firebase Database', error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div
@@ -99,7 +98,9 @@ export const EditProfile = (props) => {
             </svg>
           </div>
 
-          <h2 className={styles.headerTitle}>Edit profile</h2>
+          <h2 className={styles.headerTitle}>
+            {!croppedPicture.cropperOpen ? 'Edit profile' : 'Edit media'}
+          </h2>
           {!croppedPicture.cropperOpen ? (
             <button
               onClick={updateProfile}
@@ -117,23 +118,12 @@ export const EditProfile = (props) => {
           )}
         </div>
 
-        {croppedPicture.cropperOpen && (
-          <div className={styles.cropper}>
-            <AvatarEditor
-              image={croppedPicture.originalImg}
-              className={styles.crop}
-              width={336}
-              height={336}
-              border={50}
-              color={[230, 236, 240, 0.7]}
-              scale={1}
-              rotate={0}
-              ref={editor}
-            />
-          </div>
-        )}
-
-        {!croppedPicture.cropperOpen && (
+        {croppedPicture.cropperOpen ? (
+          <ImageCropper
+            editor={editor}
+            originalImg={croppedPicture.originalImg}
+          />
+        ) : (
           <>
             <div className={styles.images}>
               <img
