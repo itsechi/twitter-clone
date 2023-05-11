@@ -20,47 +20,77 @@ export const EditProfile = (props) => {
   const [profilePicture, setProfilePicture] = React.useState(
     props.loggedUser.profilePicture || ''
   );
+  const [bannerPicture, setBannerPicture] = React.useState(
+    props.loggedUser.bannerPicture || ''
+  );
   const [croppedPicture, setCroppedPicture] = React.useState({
     cropperOpen: false,
     originalImg: null,
     zoom: 2,
     croppedImg: '',
   });
+  const [croppedBanner, setCroppedBanner] = React.useState({
+    cropperOpen: false,
+    originalImg: null,
+    zoom: 2,
+    croppedImg: '',
+  });
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, type) => {
     let url = URL.createObjectURL(e.target.files[0]);
 
-    setCroppedPicture({
-      ...croppedPicture,
-      originalImg: url,
-      cropperOpen: true,
-    });
+    if (type === 'profile') {
+      setCroppedPicture({
+        ...croppedPicture,
+        originalImg: url,
+        cropperOpen: true,
+      });
+    } else {
+      setCroppedBanner({
+        ...croppedBanner,
+        originalImg: url,
+        cropperOpen: true,
+      });
+    }
   };
 
-  const handleSave = () => {
+  const handleSave = (type) => {
     const canvasScaled = editor.current.getImageScaledToCanvas();
     const croppedImg = canvasScaled.toDataURL();
 
     canvasScaled.toBlob((blob) => {
-      const storageRef = ref(storage, `${props.loggedUser.username}.jpg`);
+      const storageRef =
+        type === 'profile'
+          ? ref(storage, `${props.loggedUser.username}.jpg`)
+          : ref(storage, `${props.loggedUser.username}_banner.jpg`);
       uploadBytes(storageRef, blob);
     });
 
-    setCroppedPicture({
-      ...croppedPicture,
-      originalImg: null,
-      cropperOpen: false,
-      croppedImg: croppedImg,
-    });
+    type === 'profile'
+      ? setCroppedPicture({
+          ...croppedPicture,
+          originalImg: null,
+          cropperOpen: false,
+          croppedImg: croppedImg,
+        })
+      : setCroppedBanner({
+          ...croppedBanner,
+          originalImg: null,
+          cropperOpen: false,
+          croppedImg: croppedImg,
+        });
 
-    getProfilePicture();
+    getPicture(type);
   };
 
-  const getProfilePicture = () => {
-    const storageRef = ref(storage, `${props.loggedUser.username}.jpg`);
+  const getPicture = (type) => {
+    const storageRef =
+      type === 'profile'
+        ? ref(storage, `${props.loggedUser.username}.jpg`)
+        : ref(storage, `${props.loggedUser.username}_banner.jpg`);
     getDownloadURL(storageRef)
       .then((url) => {
-        setProfilePicture(url);
+        type === 'profile' ? setProfilePicture(url) : setBannerPicture(url);
       })
       .catch((error) => {
         console.error(error);
@@ -99,9 +129,11 @@ export const EditProfile = (props) => {
           </div>
 
           <h2 className={styles.headerTitle}>
-            {!croppedPicture.cropperOpen ? 'Edit profile' : 'Edit media'}
+            {!croppedPicture.cropperOpen || !croppedBanner.cropperOpen
+              ? 'Edit profile'
+              : 'Edit media'}
           </h2>
-          {!croppedPicture.cropperOpen ? (
+          {!croppedPicture.cropperOpen && !croppedBanner.cropperOpen ? (
             <button
               onClick={updateProfile}
               className={['btn', styles.btn].join(' ')}
@@ -110,7 +142,11 @@ export const EditProfile = (props) => {
             </button>
           ) : (
             <button
-              onClick={handleSave}
+              onClick={() =>
+                croppedPicture.cropperOpen
+                  ? handleSave('profile')
+                  : handleSave('banner')
+              }
               className={['btn', styles.btn].join(' ')}
             >
               Apply
@@ -118,22 +154,48 @@ export const EditProfile = (props) => {
           )}
         </div>
 
-        {croppedPicture.cropperOpen ? (
+        {croppedPicture.cropperOpen || croppedBanner.cropperOpen ? (
           <ImageCropper
             editor={editor}
-            originalImg={croppedPicture.originalImg}
+            width={croppedPicture.cropperOpen ? 336 : 550}
+            height={croppedPicture.cropperOpen ? 336 : 180}
+            originalImg={
+              croppedPicture.cropperOpen
+                ? croppedPicture.originalImg
+                : croppedBanner.originalImg
+            }
           />
         ) : (
           <>
             <div className={styles.images}>
-              <img
-                className={styles.banner}
-                src={
-                  props.loggedUser.bannerPicture
-                    ? props.loggedUser.bannerPicture
-                    : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
-                }
-              ></img>
+              <div>
+                {croppedBanner.croppedImg ? (
+                  <img
+                    className={styles.banner}
+                    src={croppedBanner.croppedImg}
+                  ></img>
+                ) : (
+                  <img
+                    className={styles.banner}
+                    src={
+                      props.loggedUser.bannerPicture
+                        ? { bannerPicture }
+                        : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
+                    }
+                  ></img>
+                )}
+                <label className={styles.pictureInput}>
+                  <svg>
+                    <use href={`${icons}#pictureInput`}></use>
+                  </svg>
+                  <input
+                    className={styles.hidden}
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => handleFileChange(e, 'banner')}
+                  ></input>
+                </label>
+              </div>
 
               <div className={styles.profilePicContainer}>
                 {croppedPicture.croppedImg ? (
@@ -152,7 +214,7 @@ export const EditProfile = (props) => {
                     className={styles.hidden}
                     type="file"
                     accept="image/png, image/jpeg"
-                    onChange={handleFileChange}
+                    onChange={(e) => handleFileChange(e, 'profile')}
                   ></input>
                 </label>
               </div>

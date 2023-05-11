@@ -7,8 +7,8 @@ export const ImageCropper = (props) => {
       <AvatarEditor
         image={props.originalImg}
         className={styles.crop}
-        width={336}
-        height={336}
+        width={props.width}
+        height={props.height}
         border={50}
         color={[230, 236, 240, 0.7]}
         scale={1}
