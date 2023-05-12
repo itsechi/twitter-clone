@@ -102,9 +102,10 @@ export const EditProfile = (props) => {
       await updateDoc(doc(db, 'profiles', props.loggedUser.username), {
         displayName: displayName,
         description: description,
+        profilePicture: profilePicture,
+        bannerPicture: bannerPicture,
       });
       props.setEditModal(false);
-      props.setUpdated(true);
     } catch (error) {
       console.error('Error updating profile in Firebase Database', error);
     }
@@ -178,8 +179,8 @@ export const EditProfile = (props) => {
                   <img
                     className={styles.banner}
                     src={
-                      props.loggedUser.bannerPicture
-                        ? { bannerPicture }
+                      bannerPicture
+                        ? bannerPicture
                         : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
                     }
                   ></img>

@@ -29,18 +29,17 @@ export const Profile = (props) => {
   const [buttonText, setButtonText] = React.useState('');
   const location = useLocation();
   const [editModal, setEditModal] = React.useState(false);
-  const [updated, setUpdated] = React.useState(false);
 
   React.useEffect(() => {
+    console.log(props.loggedUser);
     getUser(routeParams.id);
-    setUpdated(false)
     const pathname = location.pathname.split('/')[2];
     if (!pathname) return setFeed('Tweets');
     const firstLetter = pathname.charAt(0).toUpperCase();
     const remainingLetters = pathname.slice(1);
     const feedName = firstLetter + remainingLetters;
     setFeed(feedName);
-  }, [routeParams.id, props.loggedUser, feed, updated]);
+  }, [routeParams.id, props.loggedUser, feed]);
 
   const getUser = async (username) => {
     const user = await getUserFromQuery(username);
@@ -107,8 +106,6 @@ export const Profile = (props) => {
               className={styles.banner}
               src={
                 user.bannerPicture
-                  ? user.bannerPicture
-                  : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
               }
             ></img>
             <img className={styles.profilePic} src={user.profilePicture}></img>
@@ -188,7 +185,6 @@ export const Profile = (props) => {
         <EditProfile
           setEditModal={setEditModal}
           loggedUser={props.loggedUser}
-          setUpdated={setUpdated}
         />
       )}
     </main>
