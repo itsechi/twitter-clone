@@ -109,8 +109,8 @@ function App() {
         {modal && (
           <LoginModal
             signInWithGoogle={signInWithGoogle}
-            setModal={setModal}
             joinAsGuest={joinAsGuest}
+            setModal={setModal}
           />
         )}
         <Header signOut={signOutUser} loggedUser={loggedUser} />

@@ -18,28 +18,32 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { EditProfile } from '../../components/EditProfile/EditProfile';
+import { Button } from '../../components/Button/Button';
 
 export const Profile = (props) => {
   const routeParams = useParams();
+  const location = useLocation();
   const [feed, setFeed] = React.useState('Tweets');
   const [user, setUser] = React.useState();
-  const [tweets, setTweets] = React.useState();
+  const [numOfTweets, setNumOfTweets] = React.useState();
   const [followerAmount, setFollowerAmount] = React.useState();
   const [followed, setFollowed] = React.useState(false);
   const [buttonText, setButtonText] = React.useState('');
-  const location = useLocation();
   const [editModal, setEditModal] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(props.loggedUser);
     getUser(routeParams.id);
+    changeFeedName();
+  }, [routeParams.id, props.loggedUser, feed]);
+
+  const changeFeedName = () => {
     const pathname = location.pathname.split('/')[2];
     if (!pathname) return setFeed('Tweets');
     const firstLetter = pathname.charAt(0).toUpperCase();
     const remainingLetters = pathname.slice(1);
     const feedName = firstLetter + remainingLetters;
     setFeed(feedName);
-  }, [routeParams.id, props.loggedUser, feed]);
+  };
 
   const getUser = async (username) => {
     const user = await getUserFromQuery(username);
@@ -87,8 +91,8 @@ export const Profile = (props) => {
     }
   };
 
-  const numberOfTweets = tweets
-    ? `${tweets} ${tweets === 1 ? 'Tweet' : 'Tweets'}`
+  const numberOfTweets = numOfTweets
+    ? `${numOfTweets} ${numOfTweets === 1 ? 'Tweet' : 'Tweets'}`
     : '0 Tweets';
 
   return (
@@ -102,12 +106,7 @@ export const Profile = (props) => {
           />
 
           <div className={styles.images}>
-            <img
-              className={styles.banner}
-              src={
-                user.bannerPicture
-              }
-            ></img>
+            <img className={styles.banner} src={user.bannerPicture}></img>
             <img className={styles.profilePic} src={user.profilePicture}></img>
           </div>
 
@@ -115,27 +114,24 @@ export const Profile = (props) => {
             <div className={styles.followBar}>
               {props.loggedUser &&
                 (props.loggedUser.username !== routeParams.id ? (
-                  <button
-                    className={[
-                      followed ? styles.unfollowBtn : styles.followBtn,
-                      styles.btn,
-                      'btn',
-                    ].join(' ')}
-                    onClick={updateFollowing}
-                    onMouseOver={() => followed && setButtonText('Unfollow')}
-                    onMouseLeave={() => followed && setButtonText('Following')}
-                  >
-                    {buttonText}
-                  </button>
+                  <Button
+                    styles={[
+                      'profileBtn',
+                      followed ? 'unfollowBtn' : 'followBtn',
+                    ]}
+                    clickEvent={updateFollowing}
+                    mouseOverEvent={() => followed && setButtonText('Unfollow')}
+                    mouseLeaveEvent={() =>
+                      followed && setButtonText('Following')
+                    }
+                    text={buttonText}
+                  />
                 ) : (
-                  <button
-                    onClick={() => setEditModal(true)}
-                    className={[styles.btn, 'btn', styles.unfollowBtn].join(
-                      ' '
-                    )}
-                  >
-                    Edit profile
-                  </button>
+                  <Button
+                    styles={['profileBtn', 'unfollowBtn']}
+                    clickEvent={() => setEditModal(true)}
+                    text="Edit profile"
+                  />
                 ))}
             </div>
 
@@ -177,15 +173,12 @@ export const Profile = (props) => {
             openModal={props.openModal}
             author={user.username}
             loggedUser={props.loggedUser}
-            setTweets={setTweets}
+            setNumOfTweets={setNumOfTweets}
           />
         </>
       )}
       {editModal && props.loggedUser && (
-        <EditProfile
-          setEditModal={setEditModal}
-          loggedUser={props.loggedUser}
-        />
+        <EditProfile setModal={setEditModal} loggedUser={props.loggedUser} />
       )}
     </main>
   );

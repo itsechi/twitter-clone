@@ -8,6 +8,10 @@ import { db, storage } from '../../helpers/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ImageCropper } from './ImageCropper';
+import { Modal } from '../Modal/Modal';
+import { CloseBtn } from '../CloseBtn/CloseBtn';
+import { Button } from '../Button/Button';
+import { Icon } from '../Icon/Icon';
 
 export const EditProfile = (props) => {
   const editor = React.useRef(null);
@@ -105,137 +109,112 @@ export const EditProfile = (props) => {
         profilePicture: profilePicture,
         bannerPicture: bannerPicture,
       });
-      props.setEditModal(false);
+      props.setModal(false);
     } catch (error) {
       console.error('Error updating profile in Firebase Database', error);
     }
   };
 
-  return (
-    <div className={styles.container}>
-      <div
-        className={styles.overlay}
-        onClick={() => props.setEditModal(false)}
-      ></div>
+  const modal = (
+    <div className={styles.editModal}>
+      <div className={styles.header}>
+        <CloseBtn setModal={props.setModal} />
 
-      <div className={styles.editModal}>
-        <div className={styles.header}>
-          <div
-            className={styles.closeBtn}
-            onClick={() => props.setEditModal(false)}
-          >
-            <svg>
-              <use href={`${icons}#close`}></use>
-            </svg>
-          </div>
-
-          <h2 className={styles.headerTitle}>
-            {!croppedPicture.cropperOpen || !croppedBanner.cropperOpen
-              ? 'Edit profile'
-              : 'Edit media'}
-          </h2>
-          {!croppedPicture.cropperOpen && !croppedBanner.cropperOpen ? (
-            <button
-              onClick={updateProfile}
-              className={['btn', styles.btn].join(' ')}
-            >
-              Save
-            </button>
-          ) : (
-            <button
-              onClick={() =>
-                croppedPicture.cropperOpen
-                  ? handleSave('profile')
-                  : handleSave('banner')
-              }
-              className={['btn', styles.btn].join(' ')}
-            >
-              Apply
-            </button>
-          )}
-        </div>
-
-        {croppedPicture.cropperOpen || croppedBanner.cropperOpen ? (
-          <ImageCropper
-            editor={editor}
-            width={croppedPicture.cropperOpen ? 336 : 550}
-            height={croppedPicture.cropperOpen ? 336 : 180}
-            originalImg={
-              croppedPicture.cropperOpen
-                ? croppedPicture.originalImg
-                : croppedBanner.originalImg
-            }
+        <h2 className={styles.headerTitle}>
+          {!croppedPicture.cropperOpen || !croppedBanner.cropperOpen
+            ? 'Edit profile'
+            : 'Edit media'}
+        </h2>
+        {!croppedPicture.cropperOpen && !croppedBanner.cropperOpen ? (
+          <Button
+            styles={['editProfileBtn']}
+            clickEvent={updateProfile}
+            text={'Save'}
           />
         ) : (
-          <>
-            <div className={styles.images}>
-              <div>
-                {croppedBanner.croppedImg ? (
-                  <img
-                    className={styles.banner}
-                    src={croppedBanner.croppedImg}
-                  ></img>
-                ) : (
-                  <img
-                    className={styles.banner}
-                    src={
-                      bannerPicture
-                        ? bannerPicture
-                        : 'https://pbs.twimg.com/profile_banners/1256344213664530433/1603029972/600x200'
-                    }
-                  ></img>
-                )}
-                <label className={styles.pictureInput}>
-                  <svg>
-                    <use href={`${icons}#pictureInput`}></use>
-                  </svg>
-                  <input
-                    className={styles.hidden}
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileChange(e, 'banner')}
-                  ></input>
-                </label>
-              </div>
-
-              <div className={styles.profilePicContainer}>
-                {croppedPicture.croppedImg ? (
-                  <img
-                    className={styles.profilePic}
-                    src={croppedPicture.croppedImg}
-                  ></img>
-                ) : (
-                  <img className={styles.profilePic} src={profilePicture}></img>
-                )}
-                <label className={styles.pictureInput}>
-                  <svg>
-                    <use href={`${icons}#pictureInput`}></use>
-                  </svg>
-                  <input
-                    className={styles.hidden}
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileChange(e, 'profile')}
-                  ></input>
-                </label>
-              </div>
-            </div>
-
-            <div className={styles.inputs}>
-              <InputWrap
-                text={'Name'}
-                input={displayName}
-                setInput={setDisplayName}
-              />
-              <InputWrap
-                text={'Bio'}
-                input={description}
-                setInput={setDescription}
-              />
-            </div>
-          </>
+          <Button
+            styles={['editProfileBtn']}
+            clickEvent={() =>
+              croppedPicture.cropperOpen
+                ? handleSave('profile')
+                : handleSave('banner')
+            }
+            text={'Apply'}
+          />
         )}
       </div>
+
+      {croppedPicture.cropperOpen || croppedBanner.cropperOpen ? (
+        <ImageCropper
+          editor={editor}
+          width={croppedPicture.cropperOpen ? 336 : 550}
+          height={croppedPicture.cropperOpen ? 336 : 180}
+          originalImg={
+            croppedPicture.cropperOpen
+              ? croppedPicture.originalImg
+              : croppedBanner.originalImg
+          }
+        />
+      ) : (
+        <>
+          <div className={styles.images}>
+            <div>
+              {croppedBanner.croppedImg ? (
+                <img
+                  className={styles.banner}
+                  src={croppedBanner.croppedImg}
+                ></img>
+              ) : (
+                <img className={styles.banner} src={bannerPicture}></img>
+              )}
+              <label className={styles.pictureInput}>
+                <Icon name="pictureInput" />
+                <input
+                  className={styles.hidden}
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={(e) => handleFileChange(e, 'banner')}
+                ></input>
+              </label>
+            </div>
+
+            <div className={styles.profilePicContainer}>
+              {croppedPicture.croppedImg ? (
+                <img
+                  className={styles.profilePic}
+                  src={croppedPicture.croppedImg}
+                ></img>
+              ) : (
+                <img className={styles.profilePic} src={profilePicture}></img>
+              )}
+              <label className={styles.pictureInput}>
+                <Icon name="pictureInput" />
+                <input
+                  className={styles.hidden}
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={(e) => handleFileChange(e, 'profile')}
+                ></input>
+              </label>
+            </div>
+          </div>
+
+          <div className={styles.inputs}>
+            <InputWrap
+              text={'Name'}
+              input={displayName}
+              setInput={setDisplayName}
+            />
+            <InputWrap
+              text={'Bio'}
+              input={description}
+              setInput={setDescription}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
+
+  return <Modal modal={modal} setModal={props.setModal} />;
 };

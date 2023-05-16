@@ -1,13 +1,19 @@
+import styles from './Tweets.module.scss';
 import { Tweet } from '../Tweet/Tweet';
 import { TweetInput } from '../TweetInput/TweetInput';
-import { getUserFromRef } from '../../helpers/getUserFromRef';
 import React from 'react';
+
+// firebase
 import { db } from '../../helpers/firebase';
+import { getUserFromRef } from '../../helpers/getUserFromRef';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-import styles from './Tweets.module.scss';
 
 export const Tweets = (props) => {
   const [tweets, setTweets] = React.useState();
+
+  React.useEffect(() => {
+    getTweets();
+  }, [props.author, props.feed, props.loggedUser]);
 
   const getTweets = async (user = props.author) => {
     let data = [];
@@ -15,13 +21,13 @@ export const Tweets = (props) => {
 
     // tweets from specific user on their profile
     if (user) {
-      if (props.feed === 'Tweets') {
-        tweetsQuery = query(
-          collection(db, 'tweets'),
-          where('username', '==', user),
-          orderBy('date', 'desc')
-        );
-      } else return setTweets([]);
+      if (props.feed !== 'Tweets') return setTweets([]);
+      tweetsQuery = query(
+        collection(db, 'tweets'),
+        where('username', '==', user),
+        orderBy('date', 'desc')
+      );
+
       // the following tab
     } else if (props.feed === 'Following') {
       const users =
@@ -32,15 +38,18 @@ export const Tweets = (props) => {
         where('username', 'in', users),
         orderBy('date', 'desc')
       );
+
       // the home feed, tweets from all users
     } else {
       tweetsQuery = query(collection(db, 'tweets'), orderBy('date', 'desc'));
     }
 
     const querySnapshot = await getDocs(tweetsQuery);
-    querySnapshot.forEach((doc) => {
-      data.push({ ...doc.data(), id: doc.id });
+    querySnapshot.forEach((tweet) => {
+      data.push({ ...tweet.data(), id: tweet.id });
     });
+
+    // fetch user info
     await Promise.all(
       data.map(async (tweet) => {
         let user = await getUserFromRef(tweet.user);
@@ -48,12 +57,8 @@ export const Tweets = (props) => {
       })
     );
     setTweets(data);
-    props.setTweets && props.setTweets(data.length);
+    props.setNumOfTweets && props.setNumOfTweets(data.length);
   };
-
-  React.useEffect(() => {
-    getTweets();
-  }, [props.author, props.feed, props.loggedUser]);
 
   const displayTweets =
     tweets &&

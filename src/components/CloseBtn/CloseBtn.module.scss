@@ -1,0 +1,19 @@
+@import '../../variables';
+
+.closeBtn {
+  min-height: 36px;
+  min-width: 36px;
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: $black;
+  fill: currentcolor;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $grayHover;
+  }
+}

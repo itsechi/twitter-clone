@@ -1,7 +1,8 @@
 import styles from './TweetInput.module.scss';
 import React from 'react';
-import { addDoc, collection, serverTimestamp, doc } from 'firebase/firestore';
+import { Button } from '../Button/Button';
 import { db } from '../../helpers/firebase';
+import { addDoc, collection, serverTimestamp, doc } from 'firebase/firestore';
 
 export const TweetInput = (props) => {
   const [tweet, setTweet] = React.useState('');
@@ -113,13 +114,12 @@ export const TweetInput = (props) => {
             )}
           </div>
 
-          <button
+          <Button
             disabled={buttonDisabled}
-            className={[styles.btn, 'btn'].join(' ')}
-            onClick={() => sendTweet(tweet)}
-          >
-            Tweet
-          </button>
+            styles={['tweetInputBtn']}
+            clickEvent={() => sendTweet(tweet)}
+            text={'Tweet'}
+          />
         </div>
       </div>
     </div>

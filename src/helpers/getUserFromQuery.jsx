@@ -9,24 +9,23 @@ export const getUserFromQuery = async (username) => {
   );
   const querySnapshot = await getDocs(userQuery);
   const data = querySnapshot.docs[0].data();
+
   const storageRef = ref(storage, `${data.username}.jpg`);
   const bannerRef = ref(storage, `${data.username}_banner.jpg`);
-  const profilePic = await getDownloadURL(storageRef)
-    .then((url) => {
-      return url;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  const bannerPic = await getDownloadURL(bannerRef)
+  const profilePicture = await getDownloadURL(storageRef);
+  const bannerPicture = await getDownloadURL(bannerRef)
     .then((url) => url)
-    .catch(() => {
-      'https://pbs.twimg.com/profile_banners/1085262492610240512/1616676981/600x200';
+    .catch(async (error) => {
+      if (error.code === 'storage/object-not-found') {
+        const bannerRef = ref(storage, `default_banner.jpg`);
+        return await getDownloadURL(bannerRef);
+      }
     });
+    
   const user = {
     ...data,
-    profilePicture: profilePic,
-    bannerPicture: bannerPic,
+    profilePicture,
+    bannerPicture
   };
   return user;
 };

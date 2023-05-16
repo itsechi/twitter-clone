@@ -1,45 +1,33 @@
 import styles from './LoginModal.module.scss';
-import icons from '../../assets/icons.svg';
+import { Icon } from '../Icon/Icon';
+import { Modal } from '../Modal/Modal';
+import { CloseBtn } from '../CloseBtn/CloseBtn';
+import { Button } from '../Button/Button';
 
 export const LoginModal = (props) => {
-  return (
-    <div className={styles.container}>
-      <div
-        className={styles.overlay}
-        onClick={() => props.setModal(false)}
-      ></div>
+  const modal = (
+    <div className={styles.loginModal}>
+      <CloseBtn setModal={props.setModal} />
 
-      <div className={styles.loginModal}>
-        <div className={styles.closeBtn} onClick={() => props.setModal(false)}>
-          <svg>
-            <use href={`${icons}#close`}></use>
-          </svg>
-        </div>
+      <Icon name="twitter" styles={styles.twitterIcon} />
 
-        <svg className={styles.twitterIcon}>
-          <use href={`${icons}#twitter`}></use>
-        </svg>
-
-        <div className={styles.text}>
-          <h2 className={styles.textLarge}>Don’t miss what’s happening</h2>
-          <p>People on Twitter are the first to know.</p>
-        </div>
-
-        <a
-          href="#"
-          className={[styles.btn, 'btn'].join(' ')}
-          onClick={props.signInWithGoogle}
-        >
-          Log in
-        </a>
-        <a
-          href="#"
-          className={[styles.btn, 'btn'].join(' ')}
-          onClick={props.joinAsGuest}
-        >
-          Join as guest
-        </a>
+      <div className={styles.text}>
+        <h2 className={styles.textLarge}>Don’t miss what’s happening</h2>
+        <p>People on Twitter are the first to know.</p>
       </div>
+
+      <Button
+        styles={['loginBtn']}
+        clickEvent={props.signInWithGoogle}
+        text={'Log in'}
+      />
+      <Button
+        styles={['loginBtn']}
+        clickEvent={props.joinAsGuest}
+        text={'Join as guest'}
+      />
     </div>
   );
+
+  return <Modal setModal={props.setModal} modal={modal} />;
 };

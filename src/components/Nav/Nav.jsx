@@ -1,5 +1,5 @@
-import { NavLink } from './NavLink';
 import styles from './Nav.module.scss';
+import { NavLink } from './NavLink';
 
 export const Nav = (props) => {
   const navLinks = props.ids.map((id, i) => (
