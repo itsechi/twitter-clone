@@ -1,0 +1,22 @@
+.spinner {
+  width: 35px;
+  height: 35px;
+  border: 4px solid lighten(#1da1f2, 30%);
+  border-top-color: #1da1f2;
+  border-radius: 50%;
+  animation: rotate .7s linear infinite;
+}
+
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
