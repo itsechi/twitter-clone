@@ -128,7 +128,7 @@ export const Profile = (props) => {
                   />
                 ) : (
                   <Button
-                    styles={['profileBtn', 'unfollowBtn']}
+                    styles={['profileBtn', 'editProfileBtn']}
                     clickEvent={() => setEditModal(true)}
                     text="Edit profile"
                   />

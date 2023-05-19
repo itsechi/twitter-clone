@@ -19,7 +19,7 @@ export const InputWrap = (props) => {
       ].join(' ')}
     >
       <label className={'textGray'}>{props.text}</label>
-      <input onChange={handleChange} value={props.input} type="text"></input>
+      <input className={styles.input} onChange={handleChange} value={props.input} type="text"></input>
     </div>
   );
 };

@@ -68,6 +68,16 @@
 }
 
 .editProfileBtn {
+  background-color: rgba(0, 0, 0, 0);
+  color: $black;
+  border: 1px solid rgb(207, 217, 222);
+
+  &:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+}
+
+.editModalBtn {
   background-color: $black;
   color: white;
   font-size: 17px !important;

@@ -27,7 +27,7 @@ import {
 } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-function App() {
+export const App = () => {
   const [user] = useAuthState(auth);
   const [modal, setModal] = React.useState(false);
   const [loggedUser, setLoggedUser] = React.useState();
@@ -150,6 +150,4 @@ function App() {
       </Router>
     </div>
   );
-}
-
-export default App;
+};

@@ -1,6 +1,5 @@
 import { InputWrap } from './InputWrap';
 import styles from './EditProfile.module.scss';
-import icons from '../../assets/icons.svg';
 import React from 'react';
 
 // firebase
@@ -12,6 +11,7 @@ import { Modal } from '../Modal/Modal';
 import { CloseBtn } from '../CloseBtn/CloseBtn';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
+import { PictureInput } from './PictureInput';
 
 export const EditProfile = (props) => {
   const editor = React.useRef(null);
@@ -30,15 +30,29 @@ export const EditProfile = (props) => {
   const [croppedPicture, setCroppedPicture] = React.useState({
     cropperOpen: false,
     originalImg: null,
-    zoom: 2,
+    zoom: 1,
     croppedImg: '',
   });
   const [croppedBanner, setCroppedBanner] = React.useState({
     cropperOpen: false,
     originalImg: null,
-    zoom: 2,
+    zoom: 1,
     croppedImg: '',
   });
+
+  const handleSlider = (e) => {
+    if (croppedPicture.cropperOpen) {
+      setCroppedPicture({
+        ...croppedPicture,
+        zoom: e.target.value,
+      });
+    } else {
+      setCroppedBanner({
+        ...croppedBanner,
+        zoom: e.target.value,
+      });
+    }
+  };
 
   const handleFileChange = (e, type) => {
     let url = URL.createObjectURL(e.target.files[0]);
@@ -127,13 +141,13 @@ export const EditProfile = (props) => {
         </h2>
         {!croppedPicture.cropperOpen && !croppedBanner.cropperOpen ? (
           <Button
-            styles={['editProfileBtn']}
+            styles={['editModalBtn']}
             clickEvent={updateProfile}
             text={'Save'}
           />
         ) : (
           <Button
-            styles={['editProfileBtn']}
+            styles={['editModalBtn']}
             clickEvent={() =>
               croppedPicture.cropperOpen
                 ? handleSave('profile')
@@ -145,57 +159,43 @@ export const EditProfile = (props) => {
       </div>
 
       {croppedPicture.cropperOpen || croppedBanner.cropperOpen ? (
-        <ImageCropper
-          editor={editor}
-          width={croppedPicture.cropperOpen ? 336 : 550}
-          height={croppedPicture.cropperOpen ? 336 : 180}
-          originalImg={
-            croppedPicture.cropperOpen
-              ? croppedPicture.originalImg
-              : croppedBanner.originalImg
-          }
-        />
+        <div className={styles.cropper}>
+          <ImageCropper
+            editor={editor}
+            zoom={
+              croppedPicture.cropperOpen
+                ? croppedPicture.zoom
+                : croppedBanner.zoom
+            }
+            width={croppedPicture.cropperOpen ? 336 : 550}
+            height={croppedPicture.cropperOpen ? 336 : 180}
+            originalImg={
+              croppedPicture.cropperOpen
+                ? croppedPicture.originalImg
+                : croppedBanner.originalImg
+            }
+            handleSlider={handleSlider}
+          />
+        </div>
       ) : (
         <>
           <div className={styles.images}>
             <div>
-              {croppedBanner.croppedImg ? (
-                <img
-                  className={styles.banner}
-                  src={croppedBanner.croppedImg}
-                ></img>
-              ) : (
-                <img className={styles.banner} src={bannerPicture}></img>
-              )}
-              <label className={styles.pictureInput}>
-                <Icon name="pictureInput" />
-                <input
-                  className={styles.hidden}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={(e) => handleFileChange(e, 'banner')}
-                ></input>
-              </label>
+              <PictureInput
+                type={'banner'}
+                picture={bannerPicture}
+                croppedPicture={croppedBanner.croppedImg}
+                handleFileChange={handleFileChange}
+              />
             </div>
 
             <div className={styles.profilePicContainer}>
-              {croppedPicture.croppedImg ? (
-                <img
-                  className={styles.profilePic}
-                  src={croppedPicture.croppedImg}
-                ></img>
-              ) : (
-                <img className={styles.profilePic} src={profilePicture}></img>
-              )}
-              <label className={styles.pictureInput}>
-                <Icon name="pictureInput" />
-                <input
-                  className={styles.hidden}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={(e) => handleFileChange(e, 'profile')}
-                ></input>
-              </label>
+              <PictureInput
+                type={'profile'}
+                picture={profilePicture}
+                croppedPicture={croppedPicture.croppedImg}
+                handleFileChange={handleFileChange}
+              />
             </div>
           </div>
 
