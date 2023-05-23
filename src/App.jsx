@@ -20,7 +20,7 @@ import { ref, uploadBytes } from 'firebase/storage';
 // react
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Navigate,
