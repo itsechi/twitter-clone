@@ -3,7 +3,7 @@
 ## Links
 [Instructions](https://www.theodinproject.com/lessons/node-path-javascript-javascript-final-project)
 
-[Live version]()
+[Live version](https://itsechi.github.io/twitter-clone/)
 
 ## Twitter Clone
 The Odin Project's JavaScript final project - a Twitter clone built with React and Firebase.
